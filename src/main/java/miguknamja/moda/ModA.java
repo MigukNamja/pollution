@@ -37,6 +37,7 @@ public class ModA
     {
         // some example code
         System.out.println("DIRT BLOCK >> "+Blocks.DIRT.getUnlocalizedName());
+        System.out.println("DIRT BLOCK 2 >> "+Blocks.DIRT.getUnlocalizedName());
     }
 
     @Mod.EventHandler
