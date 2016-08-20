@@ -1,0 +1,16 @@
+[
+{
+  "modid": "moda",
+  "name": "MigukNamja Mod A",
+  "description": "MigukNamja Mod A",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["MigukNamja"],
+  "credits": "MigukNamja, Forge, McJty",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
