@@ -1,0 +1,82 @@
+Symbol range map extraction starting
+Processing 20 files
+startProcessing "miguknamja\moda\Config.java" md5: 4d6009b9115b4f7323835c23297c94db
+Cache Hit!
+endProcessing "miguknamja\moda\Config.java"
+
+startProcessing "miguknamja\moda\ModA.java" md5: 52f2ad10175880ed84001d337b6c16c7
+Cache Hit!
+endProcessing "miguknamja\moda\ModA.java"
+
+startProcessing "miguknamja\moda\ModBlocks.java" md5: 31cdfa08c09c04c0ba5add5355caf79a
+Cache Hit!
+endProcessing "miguknamja\moda\ModBlocks.java"
+
+startProcessing "miguknamja\moda\ModEntities.java" md5: 9ccaa7720cc5bf6298e08787af2cbdae
+Cache Hit!
+endProcessing "miguknamja\moda\ModEntities.java"
+
+startProcessing "miguknamja\moda\ModItems.java" md5: 490d83dee8c239f59ee2ae4578b3f58a
+Cache Hit!
+endProcessing "miguknamja\moda\ModItems.java"
+
+startProcessing "miguknamja\moda\blocks\PolluterBlock.java" md5: 1162ef0b05d4199339bd588ddb54d5a9
+Cache Hit!
+endProcessing "miguknamja\moda\blocks\PolluterBlock.java"
+
+startProcessing "miguknamja\moda\blocks\PolluterTileEntity.java" md5: 0fd8147b54ad74e1175a1cee234d79e8
+Cache Hit!
+endProcessing "miguknamja\moda\blocks\PolluterTileEntity.java"
+
+startProcessing "miguknamja\moda\blocks\bakedmodel\BakedModelBlock.java" md5: eb9226b2135fdf155f2a2d79623359ab
+Cache Hit!
+endProcessing "miguknamja\moda\blocks\bakedmodel\BakedModelBlock.java"
+
+startProcessing "miguknamja\moda\blocks\bakedmodel\BakedModelLoader.java" md5: dcd60e28d4992bc2031d700637a8e34b
+Cache Hit!
+endProcessing "miguknamja\moda\blocks\bakedmodel\BakedModelLoader.java"
+
+startProcessing "miguknamja\moda\blocks\bakedmodel\ExampleBakedModel.java" md5: 12b50c95aa22a1434c69b57fcb63df76
+Cache Hit!
+endProcessing "miguknamja\moda\blocks\bakedmodel\ExampleBakedModel.java"
+
+startProcessing "miguknamja\moda\blocks\bakedmodel\ExampleModel.java" md5: 722bdf6fc507d483f20bca960e034ed9
+Cache Hit!
+endProcessing "miguknamja\moda\blocks\bakedmodel\ExampleModel.java"
+
+startProcessing "miguknamja\moda\blocks\bakedmodel\UnlistedPropertyBlockAvailable.java" md5: 39e405fc3a70e8fee8c9185adeba333a
+Cache Hit!
+endProcessing "miguknamja\moda\blocks\bakedmodel\UnlistedPropertyBlockAvailable.java"
+
+startProcessing "miguknamja\moda\compat\MainCompatHandler.java" md5: 22caa7504babcf79daca5e3b4c1aabec
+Cache Hit!
+endProcessing "miguknamja\moda\compat\MainCompatHandler.java"
+
+startProcessing "miguknamja\moda\compat\waila\WailaCompatibility.java" md5: 3871cd0745850339c3ad819696ccf8bf
+Cache Hit!
+endProcessing "miguknamja\moda\compat\waila\WailaCompatibility.java"
+
+startProcessing "miguknamja\moda\compat\waila\WailaInfoProvider.java" md5: 60b8463c8b2c9956874eab993a2966c1
+Cache Hit!
+endProcessing "miguknamja\moda\compat\waila\WailaInfoProvider.java"
+
+startProcessing "miguknamja\moda\items\PollutionProbe.java" md5: 07da6088157f570183f89f2b5ba44ba4
+Cache Hit!
+endProcessing "miguknamja\moda\items\PollutionProbe.java"
+
+startProcessing "miguknamja\moda\network\PacketHandler.java" md5: 6b1397c987e1b37e8e0f4f2629f18e05
+Cache Hit!
+endProcessing "miguknamja\moda\network\PacketHandler.java"
+
+startProcessing "miguknamja\moda\proxy\ClientProxy.java" md5: 2c7c2ea9bb33c7bcc2d1ad73b33f033f
+Cache Hit!
+endProcessing "miguknamja\moda\proxy\ClientProxy.java"
+
+startProcessing "miguknamja\moda\proxy\CommonProxy.java" md5: 3af733a660beb022a7234d5f5f12af88
+Cache Hit!
+endProcessing "miguknamja\moda\proxy\CommonProxy.java"
+
+startProcessing "miguknamja\moda\proxy\ServerProxy.java" md5: 2d9f6ae0bbb628c1c65c0dff4118e98c
+Cache Hit!
+endProcessing "miguknamja\moda\proxy\ServerProxy.java"
+
