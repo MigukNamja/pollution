@@ -7,6 +7,9 @@
 /bin/
 /build/
 /gradle/
-/gradlew
-/gradlew.bat
+gradlew
+gradlew.bat
 /run/
+pollution_Client.launch
+pollution_Server.launch
+
