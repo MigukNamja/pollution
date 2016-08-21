@@ -1,14 +1,14 @@
 [
 {
-  "modid": "moda",
-  "name": "MigukNamja Mod A",
-  "description": "MigukNamja Mod A",
+  "modid": "pollution",
+  "name": "Pollution",
+  "description": "Pollution",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://minecraft.curseforge.com/projects/pollution",
   "updateUrl": "",
-  "authorList": ["MigukNamja"],
-  "credits": "MigukNamja, Forge, McJty",
+  "authorList": ["MigukNamja, Pyure"],
+  "credits": "MigukNamja, Forge, McJty, Pyure",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
