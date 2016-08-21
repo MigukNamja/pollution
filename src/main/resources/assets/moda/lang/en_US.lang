@@ -1,0 +1,15 @@
+tile.moda.polluterblock.name=Polluter Block
+tile.moda.firstblock.name=First Block
+tile.moda.simpletexturedblock.name=Simple Textured Block
+tile.moda.multitexturedblock.name=Multi Textured Block
+tile.moda.statetexturedblock.name=State Textured Block
+tile.moda.modelblock.name=Model Block
+tile.moda.bakedmodelblock.name=Baked Model Block
+tile.moda.datablock.name=Data Block
+tile.moda.blinkingblock.name=Blinking Block
+tile.moda.blinkingblock_lit.name=Blinking Block
+tile.moda.pedestalblock.name=Pedestal Block
+tile.moda.testcontainerblock.name=Test Container Block
+
+key.categories.moda=ModA
+key.tutorial=ModA Key

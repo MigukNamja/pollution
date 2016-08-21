@@ -16,7 +16,7 @@ public class ModA
 {
     public static final String MODID = "moda";
     public static final String MODNAME = "Mod A";
-    public static final String VERSION = "0.0.2";
+    public static final String VERSION = "0.0.3";
     
     @SidedProxy(clientSide = "miguknamja.moda.proxy.ClientProxy", serverSide = "miguknamja.moda.ServerProxy")
     public static CommonProxy proxy;

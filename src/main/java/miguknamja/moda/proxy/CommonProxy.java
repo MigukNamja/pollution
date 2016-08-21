@@ -5,6 +5,7 @@ import miguknamja.moda.ModA;
 import miguknamja.moda.ModBlocks;
 import miguknamja.moda.ModEntities;
 import miguknamja.moda.ModItems;
+import miguknamja.moda.compat.MainCompatHandler;
 import miguknamja.moda.network.PacketHandler;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -33,7 +34,7 @@ public class CommonProxy {
         ModEntities.init();
         //ModDimensions.init();
 
-        //MainCompatHandler.registerWaila();
+        MainCompatHandler.registerWaila();
         //MainCompatHandler.registerTOP();
 
     }

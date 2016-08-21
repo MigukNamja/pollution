@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -72,13 +73,11 @@ public class BakedModelBlock extends Block {
         world.markBlockRangeForRenderUpdate(pos.add(-1, -1, -1), pos.add(1, 1, 1));
     }
 
-    /*
     @Override
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        //return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
-    */
 
     @Override
     public boolean isBlockNormalCube(IBlockState blockState) {

@@ -6,21 +6,34 @@ import net.minecraft.tileentity.TileEntity;
 public class PolluterTileEntity extends TileEntity {
 
     private int pollutionLevel = 0;
+    private int maxPollutionLevel = 20; // TODO : move this into a config
 
     public int decrement() {
-    	pollutionLevel--;
-        markDirty();
+    	if( pollutionLevel > 0 ) {
+    	  pollutionLevel--;
+          markDirty();
+    	}
         return pollutionLevel;
     }
 
     public int increment() {
-    	pollutionLevel++;
-        markDirty();
+    	if( pollutionLevel < maxPollutionLevel ) {
+    		pollutionLevel++;
+    		markDirty();
+    	}
         return pollutionLevel;
     }
 
     public int getPollution() {
         return pollutionLevel;
+    }
+
+    public double getPollutionPercent() {
+        return 100.0 * pollutionLevel / maxPollutionLevel;
+    }
+    
+    public String getPollutionString() {
+    	return "Pollution Level: " + getPollutionPercent() + "%";
     }
 
     @Override
