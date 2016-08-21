@@ -10,6 +10,5 @@
 /gradlew
 /gradlew.bat
 /run/
-/pollution_Client.launch
-/pollution_Server.launch
+*.launch
 
