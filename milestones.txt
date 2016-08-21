@@ -1,0 +1,11 @@
+Milestones
+1) Create a block that is interactable.
+2) Allow block to adjust pollution numbers.
+3) Allow pollution levels to adjust over time (dissipation, spreading to adjacent chunks)
+4) store pollution in a hashmap by coords
+5) allow machines to adjust local pollution levels (start with vanilla furnace)
+6) determine how to allow non-vanilla machines to adjust pollution mechanics
+7) provide visual feedback (haze, gui numbers in corner, etc)
+8) ? Penalty
+9) ? Penalty?
+10) ? Api (hook for pollution)
