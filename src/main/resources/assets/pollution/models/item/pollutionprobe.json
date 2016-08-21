@@ -1,7 +1,7 @@
 {
   "parent": "builtin/generated",
   "textures": {
-    "layer0": "pollution:items/itemtexture"
+    "layer0": "pollution:items/pollutionprobe"
   },
   "display": {
     "thirdperson": {
