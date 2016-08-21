@@ -1,1 +1,12 @@
+.classpath
+.git
+.gitignore
+.gradle/
+.project
+.settings/
 /bin/
+/build/
+/gradle/
+/gradlew
+/gradlew.bat
+/run/
