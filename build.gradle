@@ -34,9 +34,9 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "0.0.3"
-group= "net.miguknamja.moda" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "moda"
+version = "0.0.4"
+group= "net.miguknamja.pollution" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "pollution"
 
 minecraft {
     version = "1.10.2-12.18.1.2011"

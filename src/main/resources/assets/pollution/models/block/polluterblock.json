@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "pollution:blocks/blocktexture",
+    "down": "pollution:blocks/blocktexture",
+    "up": "pollution:blocks/blocktexture",
+    "east": "pollution:blocks/blocktexture",
+    "west": "pollution:blocks/blocktexture",
+    "north": "pollution:blocks/polluterblockfronttexture",
+    "south": "pollution:blocks/blocktexture"
+  }
+}

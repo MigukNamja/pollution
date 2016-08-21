@@ -1,0 +1,5 @@
+tile.pollution.polluterblock.name=Polluter Block
+item.pollution.pollutionprobe.name=Pollution Probe
+
+key.categories.pollution=Pollution
+key.tutorial=Pollution
