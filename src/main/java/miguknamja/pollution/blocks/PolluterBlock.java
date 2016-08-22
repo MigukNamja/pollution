@@ -6,6 +6,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import miguknamja.pollution.Pollution;
 import miguknamja.pollution.compat.waila.WailaInfoProvider;
+import miguknamja.pollution.data.PollutionWorldData;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -55,8 +56,8 @@ public class PolluterBlock extends Block implements ITileEntityProvider, WailaIn
 			IWailaConfigHandler config) {
 		TileEntity te = accessor.getTileEntity();
 		if (te instanceof PolluterTileEntity) {
-			PolluterTileEntity polluterTileEntity = (PolluterTileEntity) te;
-			currenttip.add(TextFormatting.GRAY + Pollution.getPollutionString(accessor.getPosition()));
+			//PolluterTileEntity polluterTileEntity = (PolluterTileEntity) te;
+			currenttip.add(TextFormatting.GRAY + PollutionWorldData.getPollutionString(accessor.getWorld(), accessor.getPosition()));
 		}
 		return currenttip;
 	}
@@ -66,9 +67,11 @@ public class PolluterBlock extends Block implements ITileEntityProvider, WailaIn
 		return new PolluterTileEntity();
 	}
 
+	/*
 	private PolluterTileEntity getTE(World world, BlockPos pos) {
 		return (PolluterTileEntity) world.getTileEntity(pos);
 	}
+	*/
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
@@ -78,13 +81,13 @@ public class PolluterBlock extends Block implements ITileEntityProvider, WailaIn
 
 			if (side == state.getValue(FACING)) {
 				if (hitY < .5f) {
-					Pollution.decrement(pos);
+					PollutionWorldData.decrement(world, pos);
 				} else {
-					Pollution.increment(pos);
+					PollutionWorldData.increment(world, pos);
 				}
 				
 				player.addChatComponentMessage(
-						new TextComponentString(TextFormatting.GREEN + Pollution.getPollutionString(pos)));
+						new TextComponentString(TextFormatting.GREEN + PollutionWorldData.getPollutionString(world, pos)));
 			}
 		}
 		player.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + "test" + this.tickRate(world)));

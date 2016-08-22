@@ -73,7 +73,8 @@ public class BakedModelBlock extends Block {
         world.markBlockRangeForRenderUpdate(pos.add(-1, -1, -1), pos.add(1, 1, 1));
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
@@ -89,9 +90,10 @@ public class BakedModelBlock extends Block {
         return false;
     }
 
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     protected BlockStateContainer createBlockState() {
-        IProperty[] listedProperties = new IProperty[0]; // no listed properties
+		IProperty[] listedProperties = new IProperty[0]; // no listed properties
         IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[] { NORTH, SOUTH, WEST, EAST, UP, DOWN };
         return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
