@@ -11,14 +11,16 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-
+import net.minecraftforge.common.MinecraftForge;
+import miguknamja.pollution.DimensionTickEvent;
 import java.io.File;
 
 public class CommonProxy {
 
     // Config instance
     public static Configuration config;
-
+    DimensionTickEvent events = new DimensionTickEvent();
+    
     public void preInit(FMLPreInitializationEvent e) {
         File directory = e.getModConfigurationDirectory();
         config = new Configuration(new File(directory.getPath(), "pollution.cfg"));
@@ -41,6 +43,7 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent e) {
         //NetworkRegistry.INSTANCE.registerGuiHandler(Pollution.instance, new GuiProxy());
+    	MinecraftForge.EVENT_BUS.register(events);
     }
 
     public void postInit(FMLPostInitializationEvent e) {

@@ -138,7 +138,7 @@ public class PolluterBlock extends Block implements ITileEntityProvider, WailaIn
 	
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		System.out.println("UpdateTick being called");		
+		//System.out.println("UpdateTick being called");		
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 }
