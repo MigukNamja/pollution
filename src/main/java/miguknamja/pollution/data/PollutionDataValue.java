@@ -7,6 +7,15 @@ public class PollutionDataValue {
 		pollutionLevel = p;
 	}
 	
+	public PollutionDataValue( String s ) {
+		pollutionLevel = Integer.parseInt( s );
+	}
+
+	@Override
+	public String toString() {
+    	return Integer.toString(pollutionLevel);
+    }
+    
 	public final int pollutionLevel;
 	
 	public static final PollutionDataValue defaultData = new PollutionDataValue( minPollutionLevel );
