@@ -1,10 +1,24 @@
 package miguknamja.pollution.data;
 
+import java.util.Scanner;
+
 public class PollutionDataKey {
 	public PollutionDataKey( int dim, int x, int z ) {
+		super();
 		dimensionId = dim;
 		xPosition = x;
 		zPosition = z;
+	}
+
+	public PollutionDataKey( String s ) {
+    	super();
+
+    	Scanner scanner = new Scanner( s );
+    	scanner.useDelimiter(",|\\s+");
+		dimensionId = scanner.nextInt();
+		xPosition = scanner.nextInt();
+		zPosition = scanner.nextInt();
+		scanner.close();
 	}
 	
     /** The ID of the dimension */
@@ -16,13 +30,14 @@ public class PollutionDataKey {
     /** The z coordinate of the chunk. */
     public final int zPosition;
     
+	@Override
     public int hashCode() {
-    	String string = new String( dimensionId + "." + xPosition + "." + zPosition );
     	//int hash = Math.abs( dimensionId % 100) + Math.abs(xPosition * 100) + Math.abs(zPosition * 100000);
-    	int hash = string.hashCode();
+    	int hash = toString().hashCode();
     	return hash;
     }
 
+	@Override
     public boolean equals( Object o ) {
     	if( o != null && o instanceof PollutionDataKey ) {
     		PollutionDataKey other = (PollutionDataKey)o;
@@ -32,5 +47,10 @@ public class PollutionDataKey {
     	} else {
     		return false;
     	}
+    }
+    
+	@Override
+    public String toString() {
+    	return new String( dimensionId + "," + xPosition + "," + zPosition );
     }
 }
