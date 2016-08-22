@@ -88,5 +88,4 @@ public class Pollution
     public void serverLoad(FMLServerStartingEvent event) {
         //event.registerServerCommand(new TeleportCommand());
     }
-    
 }
