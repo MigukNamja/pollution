@@ -15,7 +15,7 @@ public class Pollution
 {
     public static final String MODID = "pollution";
     public static final String MODNAME = "Pollution";
-    public static final String VERSION = "0.0.4";
+    public static final String VERSION = "0.0.5";
     
     @SidedProxy(clientSide = "miguknamja.pollution.proxy.ClientProxy", serverSide = "miguknamja.pollution.ServerProxy")
     public static CommonProxy proxy;
