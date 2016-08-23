@@ -45,13 +45,14 @@ public class PollutersDB {
 	public static void addPolluterInstance( World world, BlockPos blockPos, TileEntity polluter ) {
 		
 		/* First, get the collection of polluters in this chunk from the global HashMap of polluters */
-		PollutersPerChunk dpp = allPolluters.getOrDefault(ChunkKey.getKey(world, blockPos),null);
-		if( dpp == null ) {
+		PollutersPerChunk ppc = allPolluters.getOrDefault(ChunkKey.getKey(world, blockPos),null);
+		if( ppc == null ) {
 			/* This chunk didn't have an existing collection, so we create one */
-			dpp = new PollutersPerChunk();
+			ppc = new PollutersPerChunk();
+			allPolluters.put( ChunkKey.getKey(world, blockPos), ppc );
 		}
 		
-		dpp.polluters.put( blockPos, new DataPerPolluter(polluter) );
+		ppc.polluters.put( blockPos, new DataPerPolluter(polluter) );
 	}
 
 	/*
@@ -60,13 +61,13 @@ public class PollutersDB {
 	public static void removePolluterInstance( World world, BlockPos blockPos, TileEntity polluter ) {
 		
 		/* First, get the collection of polluters in this chunk from the global HashMap of polluters */
-		PollutersPerChunk dpp = allPolluters.getOrDefault(ChunkKey.getKey(world, blockPos),null);
-		if( dpp != null ) {
-			dpp.polluters.remove( blockPos );
+		PollutersPerChunk ppc = allPolluters.getOrDefault(ChunkKey.getKey(world, blockPos),null);
+		if( ppc != null ) {
+			ppc.polluters.remove( blockPos );
 			
 			/* If the collection is now empty, remove it from global HashMap */
-			if( dpp.polluters.isEmpty() ) {
-				allPolluters.remove( dpp.polluters );
+			if( ppc.polluters.isEmpty() ) {
+				allPolluters.remove( ChunkKey.getKey(world, blockPos) );
 			}
 		}		
 	}
@@ -90,21 +91,13 @@ public class PollutersDB {
 		Chunk chunk = world.getChunkFromBlockCoords(blockPos);
 		Map<BlockPos, TileEntity> tileEntities = chunk.getTileEntityMap();
 
-		/* remove polluters from our collection that no longer exist in the chunk as TileEnties */ 
-		audit( world, blockPos, tileEntities );
-
-		/* scan this chunk for new TileEntities to add to our collection of polluters */
-		for( Map.Entry<BlockPos, TileEntity> entry : tileEntities.entrySet()){
-			TileEntity te = entry.getValue();
-			BlockPos pos = entry.getKey();
-			if( isPolluter( te ) ) {
-				System.out.println( "Found Polluter " + te.getBlockType().getUnlocalizedName() + " at " + pos.toString() );
-				addPolluterInstance( world, blockPos, te );
-			}
-		}
-		
+		audit( world, blockPos, tileEntities ); // remove old TileEntities
+		populate( world, blockPos, tileEntities ); // add the new TileEntities
 	}
 	
+	/*
+	 * Remove polluters from our collection that no longer exist in the chunk as TileEnties
+	 */ 
 	private static void audit( World world, BlockPos blockPos, Map<BlockPos, TileEntity> tileEntities ) {
 		PollutersPerChunk ppc = allPolluters.getOrDefault(ChunkKey.getKey(world, blockPos),null);
 		if( ppc == null ) { return; } // no polluters to consider removing
@@ -120,6 +113,20 @@ public class PollutersDB {
 				removePolluterInstance( world, blockPos, dpp.te );
 			}
 		}
+	}
+	
+	/*
+	 * Scan this chunk for new TileEntities to add to our collection of polluters
+	 */
+	private static void populate( World world, BlockPos blockPos, Map<BlockPos, TileEntity> tileEntities ) {
+		for( Map.Entry<BlockPos, TileEntity> entry : tileEntities.entrySet()){
+			BlockPos  pos = entry.getKey();
+			TileEntity te = entry.getValue();
+			if( isPolluter( te ) ) {
+				System.out.println( "Found Polluter " + te.getBlockType().getUnlocalizedName() + " at " + pos.toString() );
+				addPolluterInstance( world, blockPos, te );
+			}
+		}		
 	}
 	
 	// TODO : Return the contents of the entire database as a string

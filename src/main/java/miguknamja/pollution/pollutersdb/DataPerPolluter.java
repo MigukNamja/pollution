@@ -20,4 +20,10 @@ public class DataPerPolluter {
 		this.te = te;
 		this.fuels = new HashSet<Slot>();
 	}
+	
+	@Override
+	public String toString() {
+		String s = te.getBlockType().getUnlocalizedName();
+		return s;
+	}
 }
