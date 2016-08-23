@@ -1,12 +1,13 @@
 package miguknamja.pollution;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
-import miguknamja.pollution.data.PollutionDataKey;
-import miguknamja.pollution.data.PollutionDataValue;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
 /*
  * This class implements the following actions:
  * 1. Scanning for and identifying pollution sources, i.e. "polluters"
@@ -20,16 +21,23 @@ import net.minecraft.world.chunk.Chunk;
 
 public class PollutionUpdater {
     
-	/* Map (list) of polluters in this chunk */
-	private Map<BlockPos, TileEntity> polluters;
-	
 	/* The update period for performing scans */
 	private int ticksPerUpdatePeriod;
 
+	/* Map (list) of polluters in this chunk */
+	private HashMap<BlockPos, TileEntity> polluters;
+	
+	/* The known polluter blocks, read from a config or .json file  */
+	private HashSet<String> registeredPolluters;
+
 	public PollutionUpdater() {
 		super();
-		this.polluters = null;
-		this.ticksPerUpdatePeriod = 20; // TODO : Read this from a config		
+		this.ticksPerUpdatePeriod = 20; // TODO : Read this from a config
+		this.polluters = new HashMap<BlockPos, TileEntity>();
+		this.registeredPolluters = new HashSet<String>();
+		
+		registeredPolluters.add("tile.furnace"); // TODO : Read this from a config or .json file
+		registeredPolluters.add("tile.pollution.polluterblock"); // TODO : Read this from a config or .json file
 	}
 	
 	public PollutionUpdater(int ticksPerUpdatePeriod) {
@@ -48,27 +56,26 @@ public class PollutionUpdater {
 			TileEntity te = entry.getValue();
 			BlockPos pos = entry.getKey();
 			if( isPolluter( te ) ) {
-				System.out.println( "Found Polluter " + te.toString() + " at " + pos.toString() );
+				System.out.println( "Found Polluter " + te.getBlockType().getUnlocalizedName() + " at " + pos.toString() );
+				polluters.put( blockPos, te );
 			}
 		}
 	}
 	
 	private boolean isPolluter( TileEntity te ) {
-		return true;
-		/*
-		if( te.getClass() eq "TileEntityFurnace" ) {
+		String unlocalizedName = te.getBlockType().getUnlocalizedName();
+		if( registeredPolluters.contains(unlocalizedName) ) {
 			return true;
 		} else {
 			return false;
 		}
-		*/
 	}
 
-	public Map<BlockPos, TileEntity> getPolluters() {
+	public HashMap<BlockPos, TileEntity> getPolluters() {
 		return polluters;
 	}
 
-	public void setPolluters(Map<BlockPos, TileEntity> polluters) {
+	public void setPolluters(HashMap<BlockPos, TileEntity> polluters) {
 		this.polluters = polluters;
 	}
 
