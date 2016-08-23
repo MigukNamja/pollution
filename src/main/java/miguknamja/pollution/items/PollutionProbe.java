@@ -1,6 +1,7 @@
 package miguknamja.pollution.items;
 
 import miguknamja.pollution.Pollution;
+import miguknamja.pollution.PollutionUpdater;
 import miguknamja.pollution.data.PollutionWorldData;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,8 +43,11 @@ public class PollutionProbe extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
-    	if( !worldIn.isRemote ) // execute server side only
+    	if( !worldIn.isRemote ) { // execute server side only
     	  playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + PollutionWorldData.getPollutionString(worldIn, playerIn.getPosition())));
+    	  PollutionUpdater pu = new PollutionUpdater();
+    	  pu.scan( worldIn, playerIn.getPosition() );
+    	}
     	
     	return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }
