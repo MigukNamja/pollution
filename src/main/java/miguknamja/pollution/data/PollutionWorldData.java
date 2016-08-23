@@ -3,6 +3,7 @@ package miguknamja.pollution.data;
 import java.util.HashMap;
 import java.util.Map;
 
+import miguknamja.pollution.ChunkKey;
 import miguknamja.pollution.Pollution;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -10,7 +11,6 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapStorage;
 
 /*
@@ -22,11 +22,11 @@ public class PollutionWorldData extends WorldSavedData {
   // Required constructors
   public PollutionWorldData() {
 	  super(DATA_NAME);
-	  hashMap = new HashMap<PollutionDataKey, PollutionDataValue>();
+	  hashMap = new HashMap<ChunkKey, PollutionDataValue>();
   }
   public PollutionWorldData(String s) {
 	  super(s);
-	  hashMap = new HashMap<PollutionDataKey, PollutionDataValue>();
+	  hashMap = new HashMap<ChunkKey, PollutionDataValue>();
   }
   
   public static int decrement( World world, BlockPos position ) {
@@ -55,7 +55,7 @@ public class PollutionWorldData extends WorldSavedData {
 		  PollutionDataValue value = new PollutionDataValue( newPollution );
 
 		  /* 1 instance of the PollutionWorldData per dimension */
-		  PollutionDataKey key = getKey( world, position );
+		  ChunkKey key = ChunkKey.getKey( world, position );
 		  PollutionWorldData instance = get( world );
 		  instance.hashMap.put( key, value );
 		  
@@ -70,7 +70,7 @@ public class PollutionWorldData extends WorldSavedData {
   public static int getPollution( World world, BlockPos position ) {
 	  	  
 	  /* 1 instance of the PollutionWorldData per dimension */
-	  PollutionDataKey key = getKey( world, position );
+	  ChunkKey key = ChunkKey.getKey( world, position );
 	  PollutionWorldData instance = get( world );
 	  PollutionDataValue data = instance.hashMap.getOrDefault( key, PollutionDataValue.defaultData );
 
@@ -92,7 +92,7 @@ public class PollutionWorldData extends WorldSavedData {
 	  
 	  int i = 0;
 	  while( i < tagList.tagCount() ) {
-		  PollutionDataKey     key = new PollutionDataKey  ( tagList.getStringTagAt(i++) );
+		  ChunkKey     key = new ChunkKey  ( tagList.getStringTagAt(i++) );
 		  PollutionDataValue value = new PollutionDataValue( tagList.getStringTagAt(i++) );
 		  hashMap.put( key, value );
 	  }
@@ -104,7 +104,7 @@ public class PollutionWorldData extends WorldSavedData {
 	  NBTTagList tagList = new NBTTagList();
 	  nbt.setTag( DATA_NAME, tagList );
 	  
-      for( Map.Entry<PollutionDataKey, PollutionDataValue> entry : hashMap.entrySet()){
+      for( Map.Entry<ChunkKey, PollutionDataValue> entry : hashMap.entrySet()){
 		  tagList.appendTag(new NBTTagString(entry.getKey().toString()));
 		  tagList.appendTag(new NBTTagString(entry.getValue().toString()));
 	  }
@@ -134,14 +134,7 @@ public class PollutionWorldData extends WorldSavedData {
 	  return instance;
   }
   
-  private static PollutionDataKey getKey(World world, BlockPos position) {
-	  Chunk chunk = world.getChunkFromBlockCoords(position);
-	  int dim = world.provider.getDimension();
-	  PollutionDataKey key = new PollutionDataKey( dim, chunk.xPosition, chunk.zPosition );
-	  return key;
-  }
-  
-  private HashMap<PollutionDataKey, PollutionDataValue> hashMap;  
+  private HashMap<ChunkKey, PollutionDataValue> hashMap;  
   private static HashMap<DimensionIdKey, PollutionWorldData> instanceByDimension = new HashMap<DimensionIdKey, PollutionWorldData>();
   private static int minPollutionLevel = PollutionDataValue.minPollutionLevel;
   private static int maxPollutionLevel = 20; // TODO : read this value from a config
