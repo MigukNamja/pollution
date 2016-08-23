@@ -1,16 +1,20 @@
-package miguknamja.pollution.data;
+package miguknamja.pollution;
 
 import java.util.Scanner;
 
-public class PollutionDataKey {
-	public PollutionDataKey( int dim, int x, int z ) {
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+
+public class ChunkKey {
+	public ChunkKey( int dim, int x, int z ) {
 		super();
 		dimensionId = dim;
 		xPosition = x;
 		zPosition = z;
 	}
 
-	public PollutionDataKey( String s ) {
+	public ChunkKey( String s ) {
     	super();
 
     	Scanner scanner = new Scanner( s );
@@ -39,8 +43,8 @@ public class PollutionDataKey {
 
 	@Override
     public boolean equals( Object o ) {
-    	if( o != null && o instanceof PollutionDataKey ) {
-    		PollutionDataKey other = (PollutionDataKey)o;
+    	if( o != null && o instanceof ChunkKey ) {
+    		ChunkKey other = (ChunkKey)o;
     		return( this.dimensionId == other.dimensionId &&
     				this.xPosition == other.xPosition &&    			
     				this.zPosition == other.zPosition );
@@ -53,4 +57,11 @@ public class PollutionDataKey {
     public String toString() {
     	return new String( dimensionId + "," + xPosition + "," + zPosition );
     }
+
+	public static ChunkKey getKey(World world, BlockPos position) {
+		  Chunk chunk = world.getChunkFromBlockCoords(position);
+		  int dim = world.provider.getDimension();
+		  ChunkKey key = new ChunkKey( dim, chunk.xPosition, chunk.zPosition );
+		  return key;
+	  }
 }
