@@ -2,9 +2,8 @@ package miguknamja.pollution.items;
 
 import miguknamja.pollution.Pollution;
 import miguknamja.pollution.PollutionUpdater;
-import miguknamja.pollution.data.PollutionWorldData;
+import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.pollutersdb.PollutersDB;
-import miguknamja.pollution.pollutersdb.PollutersPerChunk;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -24,32 +23,35 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PollutionProbe extends Item {
 
-    public PollutionProbe() {
-        setRegistryName("pollutionprobe");
-        setUnlocalizedName(Pollution.MODID + ".pollutionprobe");
-        GameRegistry.register(this);
-    }
+	public PollutionProbe() {
+		setRegistryName("pollutionprobe");
+		setUnlocalizedName(Pollution.MODID + ".pollutionprobe");
+		GameRegistry.register(this);
+	}
 
-    @SideOnly(Side.CLIENT)
-    public void initModel() {
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-    }
-    
-    @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-    	//playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + getPollutionString()));
-    	return super.onItemUse( stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ );
-    }
+	@SideOnly(Side.CLIENT)
+	public void initModel() {
+		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
-    {
-    	if( !worldIn.isRemote ) { // execute server side only
-    	  playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + PollutionWorldData.getPollutionString(worldIn, playerIn.getPosition())));
-    	  PollutersDB.scan( worldIn, playerIn.getPosition() );
-    	}
-    	
-    	return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
-    }
+	@Override
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	{
+		//playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + getPollutionString()));
+		return super.onItemUse( stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ );
+	}
+
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+	{
+		if( !worldIn.isRemote ) { // execute server side only
+			BlockPos chunkPos = playerIn.getPosition();
+			PollutersDB.scan( worldIn, chunkPos );
+			PollutionDataValue p = PollutionUpdater.calcPollution( worldIn, chunkPos );
+			playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + p.getPollutionString()));
+			//System.out.println( PollutersDB.toStr() );
+		}
+
+		return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
+	}
 }

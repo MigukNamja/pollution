@@ -90,7 +90,7 @@ public class PolluterBlock extends Block implements ITileEntityProvider, WailaIn
 						new TextComponentString(TextFormatting.GREEN + PollutionWorldData.getPollutionString(world, pos)));
 			}
 		}
-		player.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + "test" + this.tickRate(world)));
+		//player.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + "test" + this.tickRate(world)));
 		
 		
 		// Return true also on the client to make sure that MC knows we handled

@@ -51,17 +51,17 @@ public class ChunkKey {
     	} else {
     		return false;
     	}
-    }
-    
-	@Override
-    public String toString() {
-    	return new String( dimensionId + "," + xPosition + "," + zPosition );
-    }
+	}
 
-	public static ChunkKey getKey(World world, BlockPos position) {
-		  Chunk chunk = world.getChunkFromBlockCoords(position);
-		  int dim = world.provider.getDimension();
-		  ChunkKey key = new ChunkKey( dim, chunk.xPosition, chunk.zPosition );
-		  return key;
-	  }
+	@Override
+	public String toString() {
+		return new String( dimensionId + "," + xPosition + "," + zPosition );
+	}
+
+	public static ChunkKey getKey(World world, BlockPos blockPos) {
+		Chunk chunk = world.getChunkFromBlockCoords(blockPos);
+		int dim = world.provider.getDimension();
+		ChunkKey key = new ChunkKey( dim, chunk.xPosition, chunk.zPosition );
+		return key;
+	}
 }
