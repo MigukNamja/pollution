@@ -1,9 +1,9 @@
 package miguknamja.pollution.pollutersdb;
 
-import java.util.HashMap;
+
 import java.util.HashSet;
 import java.util.Map;
-
+import java.util.concurrent.ConcurrentHashMap;
 import miguknamja.pollution.ChunkKey;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -15,7 +15,7 @@ public class PollutersDB {
 	public static HashSet<String> registeredPolluters = new HashSet<String>();
 	
 	/* The collection of instances of all polluters across all dimensions */
-	public static HashMap<ChunkKey,PollutersPerChunk> allPolluters = new HashMap<ChunkKey,PollutersPerChunk>();
+	public static ConcurrentHashMap<ChunkKey,PollutersPerChunk> allPolluters = new ConcurrentHashMap<ChunkKey,PollutersPerChunk>();
 
 	public PollutersDB() {
 		super();		
@@ -37,6 +37,11 @@ public class PollutersDB {
 
 	public static void registerPolluter( String unlocalizedName ) {
 		registeredPolluters.add( unlocalizedName );
+	}
+	
+	
+	public static PollutersPerChunk getPollutersPerChunk( World world, BlockPos chunkPos ) {
+		return allPolluters.getOrDefault(ChunkKey.getKey(world, chunkPos), null);
 	}
 	
 	/*
@@ -106,11 +111,11 @@ public class PollutersDB {
 		 * Iterate through the collection of polluters in this chunk.
 		 * Remove any that are no longer a TileEntity in this chunk.
 		 */
-		for( Map.Entry<BlockPos, DataPerPolluter> entry : ppc.polluters.entrySet()) {
+		for( Map.Entry<BlockPos, DataPerPolluter> entry : ppc.polluters.entrySet() ) {
 			BlockPos        pos = entry.getKey();
 			DataPerPolluter dpp = entry.getValue();
 			if( !tileEntities.containsKey(pos) ) {
-				removePolluterInstance( world, blockPos, dpp.te );
+				removePolluterInstance( world, pos, dpp.te );
 			}
 		}
 	}
@@ -124,13 +129,23 @@ public class PollutersDB {
 			TileEntity te = entry.getValue();
 			if( isPolluter( te ) ) {
 				System.out.println( "Found Polluter " + te.getBlockType().getUnlocalizedName() + " at " + pos.toString() );
-				addPolluterInstance( world, blockPos, te );
+				addPolluterInstance( world, pos, te );
 			}
 		}		
 	}
 	
 	// TODO : Return the contents of the entire database as a string
 	public static String toStr() {
-		return new String("");
+		String s = new String();
+		
+		if( allPolluters == null ){ return s; }
+		s = "PollutersDB {\r\n";
+		for( Map.Entry<ChunkKey,PollutersPerChunk> entry : allPolluters.entrySet() ) {
+			ChunkKey          key = entry.getKey();
+			PollutersPerChunk ppc = entry.getValue();
+			s += "key(" + key + ")\r\n" + ppc.toString();
+		}
+		s += "}\r\n";
+		return s;
 	}
 }
