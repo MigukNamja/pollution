@@ -17,8 +17,7 @@ import net.minecraft.world.World;
 /*
  * This class implements the following actions:
  * 1. Calculating pollution output per polluter per update period, i.e. every X number of ticks
- * 2. Calculating the new pollution value for a chunk, based upon output per polluter in that chunk
- * 3. Spreading of pollution across chunks
+ * 2. Spreading of pollution across chunks
  * 
  * What this class does *not* do is implement actions for what happens with the pollution, i.e. the pollution penalties
  */
@@ -61,6 +60,7 @@ public class PollutionUpdater {
 			}
 		}
 		
+		PollutionWorldData.setPollution( curPollution, world, chunkPos );
 		return curPollution;
 	}
 
@@ -80,6 +80,6 @@ public class PollutionUpdater {
 		System.out.println( "burnTime " + burnTime );
 		
 		/* longer burn time is more efficient, i.e. pollutes less since it burns more efficiently */
-		return new PollutionDataValue( Math.sqrt( (6400 / burnTime) ) );
+		return new PollutionDataValue( Math.sqrt( 6400.0 / burnTime ) );
 	}
 }
