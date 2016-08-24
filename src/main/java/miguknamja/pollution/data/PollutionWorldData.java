@@ -48,7 +48,11 @@ public class PollutionWorldData extends WorldSavedData {
   /*
    * All updates to pollution levels should ultimately come through here
    */
-  public static void setPollution( double newPollution, World world, BlockPos chunkPos ) {	  
+  public static void setPollution( PollutionDataValue pdv, World world, BlockPos chunkPos ) {
+	  setPollution( pdv.pollutionLevel, world, chunkPos );
+  }
+
+  private static void setPollution( double newPollution, World world, BlockPos chunkPos ) {
 	  if( newPollution < PollutionDataValue.minPollutionLevel || newPollution > PollutionDataValue.maxPollutionLevel ) {
 		  return;
 	  } else {		  
@@ -103,8 +107,10 @@ public class PollutionWorldData extends WorldSavedData {
 	  nbt.setTag( DATA_NAME, tagList );
 	  
       for( Map.Entry<ChunkKey, PollutionDataValue> entry : hashMap.entrySet()){
-		  tagList.appendTag(new NBTTagString(entry.getKey().toString()));
-		  tagList.appendTag(new NBTTagString(entry.getValue().toString()));
+    	  String key   = entry.getKey().toString();
+    	  String value = entry.getValue().toString();
+		  tagList.appendTag(new NBTTagString(key));
+		  tagList.appendTag(new NBTTagString(value));
 	  }
 	  
 	  return nbt;
