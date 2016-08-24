@@ -1,6 +1,7 @@
 package miguknamja.pollution.items;
 
 import miguknamja.pollution.Pollution;
+import miguknamja.pollution.PollutionEffects;
 import miguknamja.pollution.PollutionUpdater;
 import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.pollutersdb.PollutersDB;
@@ -49,6 +50,7 @@ public class PollutionProbe extends Item {
 			PollutersDB.scan( worldIn, chunkPos );
 			PollutionDataValue p = PollutionUpdater.calcPollution( worldIn, chunkPos );
 			playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + p.getPollutionString()));
+			PollutionEffects.apply(worldIn, chunkPos);
 			//System.out.println( PollutersDB.toStr() );
 		}
 
