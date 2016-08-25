@@ -1,7 +1,6 @@
 package miguknamja.pollution.events;
 import miguknamja.pollution.data.PollutersDB;
 import miguknamja.pollution.effects.PollutionEffects;
-
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -15,7 +14,7 @@ public class ServerEventHandler extends CommonEventHandler {
 	}
 	
 	@SubscribeEvent(priority=EventPriority.NORMAL)
-    public void onServerTick( WorldTickEvent event ) {
+    public void onWorldTick( WorldTickEvent event ) {
         if (event.phase == TickEvent.Phase.START) {
         	worldTick( event );
         }
@@ -42,7 +41,7 @@ public class ServerEventHandler extends CommonEventHandler {
 			PollutionEffects.apply( event.world );
 			
 			// Send pollution data to the clients now
-			//PacketHandler.INSTANCE.sendToClient( new PacketSendPollution(pdv) );
+			PollutersDB.updatePlayers( event.world );
 		}
 
 		ticks++;

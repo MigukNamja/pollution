@@ -8,9 +8,9 @@ import miguknamja.utils.ChunkKey;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapStorage;
 
 /*
@@ -29,18 +29,18 @@ public class PollutionWorldData extends WorldSavedData {
 	  hashMap = new ConcurrentHashMap<ChunkKey, PollutionDataValue>();
   }
   
-  public static double decrement( World world, BlockPos chunkPos ) {
-	  double pollution = getPollution( world, chunkPos ).pollutionLevel;
+  public static double decrement( World world, Chunk chunk ) {
+	  double pollution = getPollution( world, chunk ).pollutionLevel;
 	  if( pollution > PollutionDataValue.minPollutionLevel ) {
-		  setPollution( pollution - 100.0, world, chunkPos );
+		  setPollution( pollution - 100.0, world, chunk );
 	  }
 	  return pollution;
   }
 
-  public static double increment( World world, BlockPos chunkPos ) {
-	  double pollution = getPollution( world, chunkPos ).pollutionLevel;
+  public static double increment( World world, Chunk chunk ) {
+	  double pollution = getPollution( world, chunk ).pollutionLevel;
   	if( pollution < PollutionDataValue.maxPollutionLevel ) {
-  		setPollution( pollution + 100.0, world, chunkPos );
+  		setPollution( pollution + 100.0, world, chunk );
   	}
       return pollution;
   }
@@ -48,18 +48,18 @@ public class PollutionWorldData extends WorldSavedData {
   /*
    * All updates to pollution levels should ultimately come through here
    */
-  public static void setPollution( PollutionDataValue pdv, World world, BlockPos chunkPos ) {
-	  setPollution( pdv.pollutionLevel, world, chunkPos );
+  public static void setPollution( PollutionDataValue pdv, World world, Chunk chunk ) {
+	  setPollution( pdv.pollutionLevel, world, chunk );
   }
 
-  private static void setPollution( double newPollution, World world, BlockPos chunkPos ) {
+  private static void setPollution( double newPollution, World world, Chunk chunk ) {
 	  if( newPollution < PollutionDataValue.minPollutionLevel || newPollution > PollutionDataValue.maxPollutionLevel ) {
 		  return;
 	  } else {		  
 		  PollutionDataValue value = new PollutionDataValue( newPollution );
 
 		  /* 1 instance of the PollutionWorldData per dimension */
-		  ChunkKey key = ChunkKey.getKey( world, chunkPos );
+		  ChunkKey key = ChunkKey.getKey( world, chunk );
 		  PollutionWorldData instance = get( world );
 		  instance.hashMap.put( key, value );
 		  
@@ -71,20 +71,20 @@ public class PollutionWorldData extends WorldSavedData {
   /*
    * All requests for pollution levels should ultimately come through here
    */
-  public static PollutionDataValue getPollution( World world, BlockPos chunkPos ) {
+  public static PollutionDataValue getPollution( World world, Chunk chunk ) {
 	  	  
 	  /* 1 instance of the PollutionWorldData per dimension */
-	  ChunkKey key = ChunkKey.getKey( world, chunkPos );
+	  ChunkKey key = ChunkKey.getKey( world, chunk );
 	  PollutionWorldData instance = get( world );
 	  return instance.hashMap.getOrDefault( key, PollutionDataValue.defaultData );
   }
 
-  public static double getPollutionPercent( World world, BlockPos chunkPos ) {
-	  return 100.0 * getPollution(world, chunkPos).pollutionLevel / PollutionDataValue.maxPollutionLevel;
+  public static double getPollutionPercent( World world, Chunk chunk ) {
+	  return 100.0 * getPollution(world, chunk).pollutionLevel / PollutionDataValue.maxPollutionLevel;
   }
 
-  public static String getPollutionString( World world, BlockPos chunkPos ) {
-	  return "Pollution Level: " + getPollutionPercent(world, chunkPos) + "%";
+  public static String getPollutionString( World world, Chunk chunk ) {
+	  return "Pollution Level: " + getPollutionPercent(world, chunk) + "%";
   }
 
   @Override

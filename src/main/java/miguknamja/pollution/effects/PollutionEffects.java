@@ -1,39 +1,36 @@
 package miguknamja.pollution.effects;
 
 import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
+import java.util.Map;
 
 import miguknamja.pollution.data.ClientData;
+import miguknamja.pollution.data.PollutersDB;
+import miguknamja.pollution.data.PollutersPerChunk;
 import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.data.PollutionWorldData;
+import miguknamja.utils.ChunkKey;
 import miguknamja.utils.Color;
-import miguknamja.utils.Logging;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ClassInheritanceMultiMap;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
 public class PollutionEffects {
 	/*
 	 * Apply the effects of pollution
 	 */
-	public static void apply( World world, BlockPos chunkPos ) {
-		if( world.isRemote ){ return; } // server only
+	public static void apply( World world, Chunk chunk ) {
+		if( world.isRemote ){ return; } // don't run on the client
 				
-		Chunk chunk = world.getChunkFromBlockCoords(chunkPos);
-
 		if( !chunk.isLoaded() ){ return; } // Never update a chunk that's not loaded
 		
-		PollutionDataValue pdv = PollutionWorldData.getPollution(world, chunkPos); // pollution in this chunk
+		PollutionDataValue pdv = PollutionWorldData.getPollution(world, chunk); // pollution in this chunk
 		
 		if( belowIgnoreThreshold(pdv) ){ return; } // Bail early if pollution level is low enough to be ignored
 
@@ -41,10 +38,12 @@ public class PollutionEffects {
 		for( ClassInheritanceMultiMap<Entity> entClass : entClasses ) {
 			Iterable<EntityLivingBase> elbs = entClass.getByClass(EntityLivingBase.class);
 			for( EntityLivingBase elb : elbs ) {
+				/*
 				if( EntityPlayer.class.isInstance(elb) ) {
 					EntityPlayer player = (EntityPlayer)elb;
 					player.addChatComponentMessage(new TextComponentString(TextFormatting.YELLOW + "pollution has a price..."));
 				}
+				*/
 				addPotionEffects( elb, pdv );
 			}
 		}
@@ -54,6 +53,13 @@ public class PollutionEffects {
 	 * Calls apply() for every chunk in this world
 	 */
 	public static void apply( World world ) {
+		if( world.isRemote ){ return; } // don't run on the client
+
+		// Iterate over all chunks we know we have polluters in
+		for( Map.Entry<ChunkKey,PollutersPerChunk> entry : PollutersDB.allPolluters.entrySet() ) {
+			ChunkKey chunkKey = entry.getKey();
+			apply( world, world.getChunkFromChunkCoords(chunkKey.xPosition, chunkKey.zPosition) );
+		}		
 		//Logging.log( "PollutionEffects.apply()" );
 	}
 	
@@ -64,7 +70,6 @@ public class PollutionEffects {
 	private static Potion potion( PotionEffects effect ){ return Potion.getPotionById( effect.getValue() ); }
 	
 	private static void addPotionEffects( EntityLivingBase elb, PollutionDataValue pdv ) {
-
 		if( belowIgnoreThreshold( pdv ) ) { return; }
 		
 		double percentOfMax = 100.0 * pdv.pollutionLevel / PollutionDataValue.maxPollutionLevel;

@@ -1,6 +1,7 @@
 package miguknamja.pollution.blocks;
 
 import java.util.List;
+import java.util.Random;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -26,11 +27,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import java.util.Random;
 
 public class PolluterBlock extends Block implements ITileEntityProvider, WailaInfoProvider {
 
@@ -57,7 +58,7 @@ public class PolluterBlock extends Block implements ITileEntityProvider, WailaIn
 		TileEntity te = accessor.getTileEntity();
 		if (te instanceof PolluterTileEntity) {
 			//PolluterTileEntity polluterTileEntity = (PolluterTileEntity) te;
-			currenttip.add(TextFormatting.GRAY + PollutionWorldData.getPollutionString(accessor.getWorld(), accessor.getPosition()));
+			//currenttip.add(TextFormatting.GRAY + PollutionWorldData.getPollutionString(accessor.getWorld(), accessor.getPosition()));
 		}
 		return currenttip;
 	}
@@ -76,18 +77,18 @@ public class PolluterBlock extends Block implements ITileEntityProvider, WailaIn
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
 			ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (!world.isRemote) {
-			// We only count on the server side.
+		if (!world.isRemote) { // Don't run on the client side
 
+			Chunk chunk = world.getChunkFromBlockCoords(pos);
 			if (side == state.getValue(FACING)) {
 				if (hitY < .5f) {
-					PollutionWorldData.decrement(world, pos);
+					PollutionWorldData.decrement(world, chunk);
 				} else {
-					PollutionWorldData.increment(world, pos);
+					PollutionWorldData.increment(world, chunk);
 				}
 				
 				player.addChatComponentMessage(
-						new TextComponentString(TextFormatting.GREEN + PollutionWorldData.getPollutionString(world, pos)));
+						new TextComponentString(TextFormatting.GREEN + PollutionWorldData.getPollutionString(world, chunk)));
 			}
 		}
 		//player.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + "test" + this.tickRate(world)));

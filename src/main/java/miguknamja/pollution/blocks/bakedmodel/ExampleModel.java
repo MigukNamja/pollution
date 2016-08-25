@@ -1,7 +1,7 @@
 package miguknamja.pollution.blocks.bakedmodel;
 
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableSet;
+import java.util.Collection;
+import java.util.Collections;
 
 import miguknamja.pollution.Pollution;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -12,8 +12,8 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-import java.util.Collection;
-import java.util.Collections;
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableSet;
 
 public class ExampleModel implements IModel {
     @Override

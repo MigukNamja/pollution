@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 /*
  * This class implements the following actions:
@@ -30,9 +31,9 @@ public class PollutionUpdater {
 	/*
 	 * update the pollution level in the chunk and return the new pollution value
 	 */
-	public static PollutionDataValue calcPollution( World world, BlockPos chunkPos ) {
-		PollutionDataValue curPollution = PollutionWorldData.getPollution( world, chunkPos );
-		PollutersPerChunk ppc = PollutersDB.getPollutersPerChunk( world, chunkPos );
+	public static PollutionDataValue calcPollution( World world, Chunk chunk ) {
+		PollutionDataValue curPollution = PollutionWorldData.getPollution( world, chunk );
+		PollutersPerChunk ppc = PollutersDB.getPollutersPerChunk( world, chunk );
 		if( ppc == null ){ return curPollution; }
 		
 		for( Map.Entry<BlockPos, DataPerPolluter> entry : ppc.polluters.entrySet() ) {
@@ -60,7 +61,7 @@ public class PollutionUpdater {
 			}
 		}
 		
-		PollutionWorldData.setPollution( curPollution, world, chunkPos );
+		PollutionWorldData.setPollution( curPollution, world, chunk );
 		return curPollution;
 	}
 
