@@ -2,11 +2,7 @@ package miguknamja.pollution.items;
 
 import miguknamja.pollution.Pollution;
 import miguknamja.pollution.PollutionUpdater;
-import miguknamja.pollution.data.PollutersDB;
 import miguknamja.pollution.data.PollutionDataValue;
-import miguknamja.pollution.effects.PollutionEffects;
-import miguknamja.pollution.network.PacketHandler;
-import miguknamja.pollution.network.PacketSendPollution;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -19,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,7 +37,10 @@ public class PollutionProbe extends Item {
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		//playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + getPollutionString()));
+		if( !worldIn.isRemote ) { // execute server side only
+			playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + "r-click"));
+			//	playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + getPollutionString()));
+		}
 		return super.onItemUse( stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ );
 	}
 
@@ -48,21 +48,11 @@ public class PollutionProbe extends Item {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
 	{
 		if( !worldIn.isRemote ) { // execute server side only
-			BlockPos chunkPos = playerIn.getPosition();
-			PollutersDB.scan( worldIn, chunkPos );
-			PollutionDataValue pdv = PollutionUpdater.calcPollution( worldIn, chunkPos );
+			BlockPos pos = playerIn.getPosition();
+			Chunk chunk = worldIn.getChunkFromBlockCoords(pos);
+			PollutionDataValue pdv = PollutionUpdater.calcPollution( worldIn, chunk );
 			playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + pdv.getPollutionString()));
-			PollutionEffects.apply(worldIn, chunkPos);
 			
-			// Send pollution data to the clients now
-			PacketHandler.INSTANCE.sendToAll(new PacketSendPollution(pdv));
-			
-			// FogDensity(EntityRenderer renderer, Entity entity, IBlockState state, double renderPartialTicks, float density)
-			//FogDensity fdev = new FogDensity(null, playerIn, null, 0.0, 0);
-			//MinecraftForge.EVENT_BUS.post( fdev );
-			
-			//FogColors fcev = new FogColors(null, playerIn, null, 0, 0, 0, 0);
-			//MinecraftForge.EVENT_BUS.post( fcev );
 			//System.out.println( PollutersDB.toStr() );
 		}
 

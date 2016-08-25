@@ -1,10 +1,5 @@
 package miguknamja.pollution.data;
 
-
-import java.util.HashSet;
-import java.util.Set;
-
-import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
 
 /*
@@ -13,12 +8,10 @@ import net.minecraft.tileentity.TileEntity;
  */
 public class DataPerPolluter {
 	public TileEntity te;
-	public Set<Slot> fuels;
 	
 	public DataPerPolluter(TileEntity te) {
 		super();
 		this.te = te;
-		this.fuels = new HashSet<Slot>();
 	}
 	
 	@Override

@@ -5,11 +5,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import miguknamja.pollution.network.PacketHandler;
+import miguknamja.pollution.network.PacketSendPollution;
 import miguknamja.utils.ChunkKey;
-import miguknamja.utils.Logging;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 
 public class PollutersDB {
@@ -42,12 +45,13 @@ public class PollutersDB {
 	}
 	
 	
-	public static PollutersPerChunk getPollutersPerChunk( World world, BlockPos chunkPos ) {
-		return allPolluters.getOrDefault(ChunkKey.getKey(world, chunkPos), null);
+	public static PollutersPerChunk getPollutersPerChunk( World world, Chunk chunk ) {
+		return allPolluters.getOrDefault(ChunkKey.getKey(world, chunk), null);
 	}
 	
 	/*
 	 * Add the polluter to the database into the chunk list at the given location
+	 * If already there, do nothing to the database.
 	 */
 	public static void addPolluterInstance( World world, BlockPos blockPos, TileEntity polluter ) {
 		
@@ -59,7 +63,9 @@ public class PollutersDB {
 			allPolluters.put( ChunkKey.getKey(world, blockPos), ppc );
 		}
 		
-		ppc.polluters.put( blockPos, new DataPerPolluter(polluter) );
+		if( !ppc.polluters.containsKey( blockPos ) ) {
+			ppc.polluters.put( blockPos, new DataPerPolluter(polluter) );
+		}
 	}
 
 	/*
@@ -91,29 +97,42 @@ public class PollutersDB {
 	 *
 	 * Scan for pollution sources in this chunk and place them in 'polluters'
 	 */
-	public static void scan( World world, BlockPos blockPos ) {
+	public static void scan( World world, Chunk chunk ) {
 		if( world.isRemote )
 			return; /* only run on the server */
 
-		Chunk chunk = world.getChunkFromBlockCoords(blockPos);
 		Map<BlockPos, TileEntity> tileEntities = chunk.getTileEntityMap();
 
-		audit( world, blockPos, tileEntities ); // remove old TileEntities
-		populate( world, blockPos, tileEntities ); // add the new TileEntities
+		audit( world, chunk, tileEntities ); // remove old TileEntities
+		populate( world, tileEntities ); // add the new TileEntities
+	}
+	public static void scan( World world, BlockPos blockPos ) {
+		Chunk chunk = world.getChunkFromBlockCoords(blockPos);
+		scan( world, chunk );
 	}
 
+	
 	/*
-	 * Calls scan() for every chunk in this world 
+	 * Calls scan() for every loaded chunk in this world 
 	 */
 	public static void scan( World world ) {
+		if( world.isRemote ){ return; } // don't run on the client
+		
+		assert( world instanceof WorldServer );
+		WorldServer worldServer = (WorldServer) world;
+
+		// Iterate over all chunks
+		for( Chunk chunk : worldServer.getChunkProvider().getLoadedChunks() ) {
+        	scan( world, chunk );
+		}
 		//Logging.log( "PollutersDB.scan()" );
 	}
 	
 	/*
 	 * Remove polluters from our collection that no longer exist in the chunk as TileEnties
 	 */ 
-	private static void audit( World world, BlockPos blockPos, Map<BlockPos, TileEntity> tileEntities ) {
-		PollutersPerChunk ppc = allPolluters.getOrDefault(ChunkKey.getKey(world, blockPos),null);
+	private static void audit( World world, Chunk chunk, Map<BlockPos, TileEntity> tileEntities ) {
+		PollutersPerChunk ppc = allPolluters.getOrDefault(ChunkKey.getKey(world, chunk),null);
 		if( ppc == null ) { return; } // no polluters to consider removing
 				
 		/*
@@ -132,12 +151,12 @@ public class PollutersDB {
 	/*
 	 * Scan this chunk for new TileEntities to add to our collection of polluters
 	 */
-	private static void populate( World world, BlockPos blockPos, Map<BlockPos, TileEntity> tileEntities ) {
+	private static void populate( World world, Map<BlockPos, TileEntity> tileEntities ) {
 		for( Map.Entry<BlockPos, TileEntity> entry : tileEntities.entrySet()){
 			BlockPos  pos = entry.getKey();
 			TileEntity te = entry.getValue();
 			if( isPolluter( te ) ) {
-				System.out.println( "Found Polluter " + te.getBlockType().getUnlocalizedName() + " at " + pos.toString() );
+				//Logging.log( "Found Polluter " + te.getBlockType().getUnlocalizedName() + " at " + pos.toString() );
 				addPolluterInstance( world, pos, te );
 			}
 		}		
@@ -156,5 +175,14 @@ public class PollutersDB {
 		}
 		s += "}\r\n";
 		return s;
+	}
+
+	public static void updatePlayers( World world ) {
+		//Predicate<EntityPlayerMP> filter = (p)-> true;
+		for( EntityPlayerMP player : world.getPlayers( EntityPlayerMP.class, (p)-> true ) ) {
+			Chunk chunk = world.getChunkFromBlockCoords( player.getPosition() );
+			PollutionDataValue pdv = PollutionWorldData.getPollution( world, chunk );
+			PacketHandler.INSTANCE.sendTo(new PacketSendPollution(pdv), player);
+		}		
 	}
 }

@@ -34,6 +34,10 @@ public class ChunkKey {
     /** The z coordinate of the chunk. */
     public final int zPosition;
     
+    public Chunk getChunk( World world ){
+    	return world.getChunkFromChunkCoords(xPosition, zPosition);
+    }
+    
 	@Override
     public int hashCode() {
     	//int hash = Math.abs( dimensionId % 100) + Math.abs(xPosition * 100) + Math.abs(zPosition * 100000);
@@ -60,6 +64,10 @@ public class ChunkKey {
 
 	public static ChunkKey getKey(World world, BlockPos blockPos) {
 		Chunk chunk = world.getChunkFromBlockCoords(blockPos);
+		return getKey( world, chunk );
+	}
+
+	public static ChunkKey getKey(World world, Chunk chunk) {
 		int dim = world.provider.getDimension();
 		ChunkKey key = new ChunkKey( dim, chunk.xPosition, chunk.zPosition );
 		return key;

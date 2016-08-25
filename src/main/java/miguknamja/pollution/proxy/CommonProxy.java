@@ -1,5 +1,7 @@
 package miguknamja.pollution.proxy;
 
+import java.io.File;
+
 import miguknamja.pollution.Config;
 import miguknamja.pollution.ModBlocks;
 import miguknamja.pollution.ModEntities;
@@ -15,8 +17,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-
-import java.io.File;
 
 public class CommonProxy {
 
