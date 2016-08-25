@@ -5,8 +5,10 @@ import miguknamja.pollution.ModEntities;
 import miguknamja.pollution.ModItems;
 import miguknamja.pollution.Pollution;
 import miguknamja.pollution.blocks.bakedmodel.BakedModelLoader;
+import miguknamja.pollution.effects.FogHandler;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -28,10 +30,14 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent e) {
         super.init(e);
 
-        // Initialize our input handler so we can listen to keys
+    	MinecraftForge.EVENT_BUS.register(new FogHandler());
+
+    	// Initialize our input handler so we can listen to keys
         //MinecraftForge.EVENT_BUS.register(new InputHandler());
         //KeyBindings.init();
 
         ModBlocks.initItemModels();
+
+        System.out.println( "ClientProxy.init" );
     }
 }

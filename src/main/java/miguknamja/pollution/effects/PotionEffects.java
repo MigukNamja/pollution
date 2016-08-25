@@ -1,4 +1,4 @@
-package miguknamja.pollution;
+package miguknamja.pollution.effects;
 
 /*
  * Copied from net.minecraft.potion.Potion

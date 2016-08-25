@@ -1,4 +1,4 @@
-package miguknamja.pollution;
+package miguknamja.utils;
 
 import java.util.Scanner;
 

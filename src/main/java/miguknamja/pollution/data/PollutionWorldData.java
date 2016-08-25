@@ -3,8 +3,8 @@ package miguknamja.pollution.data;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import miguknamja.pollution.ChunkKey;
 import miguknamja.pollution.Pollution;
+import miguknamja.utils.ChunkKey;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;

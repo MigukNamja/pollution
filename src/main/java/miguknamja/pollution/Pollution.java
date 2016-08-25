@@ -1,8 +1,6 @@
 package miguknamja.pollution;
 
 import org.apache.logging.log4j.Logger;
-
-import miguknamja.pollution.pollutersdb.PollutersDB;
 import miguknamja.pollution.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -35,9 +33,7 @@ public class Pollution
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-    	// TODO : Move to ServerPoxy and read these from a config or .json file
-    	PollutersDB.registerPolluter("tile.furnace"); 
-		PollutersDB.registerPolluter("tile.pollution.polluterblock");
+        proxy.init(event);
     }
 
     @Mod.EventHandler

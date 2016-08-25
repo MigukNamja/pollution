@@ -38,8 +38,8 @@ version = "0.0.6"
 group= "net.miguknamja.pollution" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "pollution"
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 minecraft {
     version = "1.10.2-12.18.1.2011"
