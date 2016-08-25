@@ -1,4 +1,4 @@
-package miguknamja.pollution.pollutersdb;
+package miguknamja.pollution.data;
 
 
 import java.util.HashSet;

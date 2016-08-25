@@ -2,11 +2,11 @@ package miguknamja.pollution;
 
 import java.util.Map;
 
+import miguknamja.pollution.data.DataPerPolluter;
+import miguknamja.pollution.data.PollutersDB;
+import miguknamja.pollution.data.PollutersPerChunk;
 import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.data.PollutionWorldData;
-import miguknamja.pollution.pollutersdb.DataPerPolluter;
-import miguknamja.pollution.pollutersdb.PollutersDB;
-import miguknamja.pollution.pollutersdb.PollutersPerChunk;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
