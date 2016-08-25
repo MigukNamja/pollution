@@ -2,11 +2,11 @@ package miguknamja.pollution.items;
 
 import miguknamja.pollution.Pollution;
 import miguknamja.pollution.PollutionUpdater;
+import miguknamja.pollution.data.PollutersDB;
 import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.effects.PollutionEffects;
 import miguknamja.pollution.network.PacketHandler;
 import miguknamja.pollution.network.PacketSendPollution;
-import miguknamja.pollution.pollutersdb.PollutersDB;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

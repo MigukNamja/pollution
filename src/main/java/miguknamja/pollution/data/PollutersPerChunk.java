@@ -1,4 +1,4 @@
-package miguknamja.pollution.pollutersdb;
+package miguknamja.pollution.data;
 
 /*
  * A collection of polluters in a chunk

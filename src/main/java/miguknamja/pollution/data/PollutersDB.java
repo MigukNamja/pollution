@@ -1,4 +1,4 @@
-package miguknamja.pollution.pollutersdb;
+package miguknamja.pollution.data;
 
 
 import java.util.HashSet;
@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import miguknamja.utils.ChunkKey;
+import miguknamja.utils.Logging;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -99,6 +100,13 @@ public class PollutersDB {
 
 		audit( world, blockPos, tileEntities ); // remove old TileEntities
 		populate( world, blockPos, tileEntities ); // add the new TileEntities
+	}
+
+	/*
+	 * Calls scan() for every chunk in this world 
+	 */
+	public static void scan( World world ) {
+		//Logging.log( "PollutersDB.scan()" );
 	}
 	
 	/*

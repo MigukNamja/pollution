@@ -1,8 +1,15 @@
 package miguknamja.pollution.effects;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+
+import miguknamja.pollution.data.ClientData;
 import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.data.PollutionWorldData;
 import miguknamja.utils.Color;
+import miguknamja.utils.Logging;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,20 +50,17 @@ public class PollutionEffects {
 		}
 	}
 	
+	/*
+	 * Calls apply() for every chunk in this world
+	 */
+	public static void apply( World world ) {
+		//Logging.log( "PollutionEffects.apply()" );
+	}
+	
 	public static boolean belowIgnoreThreshold( PollutionDataValue pdv ) {
 		return pdv.pollutionLevel < ( 0.1 * PollutionDataValue.maxPollutionLevel ); /* ignore anything below 10% of max for now */
 	}
 	
-	public static Color getFogColor( PollutionDataValue pdv ) {
-		double p = pdv.percent() / 100.0;
-		return( new Color( 199*p, 120*p, 72*p ) ); // dark brown/yellow color that scales with pollution
-	}
-	
-	public static float getFogDensity( PollutionDataValue pdv ) {
-		double p = pdv.percent() / 100.0;
-		return (float)(p * 0.6); // from 0.0 to 0.6, linear
-	}
-
 	private static Potion potion( PotionEffects effect ){ return Potion.getPotionById( effect.getValue() ); }
 	
 	private static void addPotionEffects( EntityLivingBase elb, PollutionDataValue pdv ) {
@@ -136,5 +140,41 @@ public class PollutionEffects {
 					false,                            // always false on server side
 					true));			                  // show particle effects			
 		}
+	}
+	
+	public static Color getFogColor( PollutionDataValue pdv ) {
+		//double p = pdv.percent() / 100.0;
+		return( new Color( 200, 120, 72 ) ); // medium brown/yellow color that scales with pollution
+	}
+	
+	public static float getFogDensity( PollutionDataValue pdv ) {
+		if( belowIgnoreThreshold( pdv )) {
+			return 0f;
+		} else {
+			double p = pdv.percent() / 100.0;
+			return (float)(Math.pow(p, 2) * 0.6f); // from 0.0 to 0.6, exponential
+		}
+	}
+
+	/*
+	 * Runs on client side only !
+	 */
+	public static void clientFog() {		
+		PollutionDataValue pdv = ClientData.pdv;
+		
+		Color color = PollutionEffects.getFogColor( pdv );
+		Float density = PollutionEffects.getFogDensity( pdv );
+        final FloatBuffer fogColours = BufferUtils.createFloatBuffer(4);
+        {
+            fogColours.put(new float[]{color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, density});
+            fogColours.flip();
+        }
+
+		GL11.glDisable( GL11.GL_FOG );
+		GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
+        GL11.glFog(GL11.GL_FOG_COLOR, fogColours );
+		GL11.glFogf(GL11.GL_FOG_DENSITY, density);
+        GL11.glHint( GL11.GL_FOG_HINT, GL11.GL_FASTEST );
+        GL11.glEnable( GL11.GL_FOG );        
 	}
 }

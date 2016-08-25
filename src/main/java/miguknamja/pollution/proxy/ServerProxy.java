@@ -1,18 +1,35 @@
 package miguknamja.pollution.proxy;
 
-import miguknamja.pollution.DimensionTickEvent;
-import miguknamja.pollution.pollutersdb.PollutersDB;
-import net.minecraftforge.common.MinecraftForge;
+/*
+ * This class executes on dedicated servers only.
+ * It does *not* execute in single-player !!
+ * 
+ * Only put code in here which should *not* be running in single-player mode
+ * and only running on a server.
+ */
+
+import miguknamja.utils.Logging;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ServerProxy extends CommonProxy {
 	
     @Override
-    public void init(FMLInitializationEvent e) {
-    	// TODO : Read these from a config or .json file
-    	PollutersDB.registerPolluter("tile.furnace"); 
-		PollutersDB.registerPolluter("tile.pollution.polluterblock");
-    	MinecraftForge.EVENT_BUS.register(new DimensionTickEvent());
-    	System.out.println( "CommonProxy.init" );
+    public void preInit(FMLPreInitializationEvent e) {    	
+    	Logging.log( "ServerProxy.preInit()" );
+        super.preInit(e);
+    }
+
+    @Override
+    public void init(FMLInitializationEvent e) {    	
+    	Logging.log( "ServerProxy.init()" );
+        super.init(e);
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent e) {    	
+    	Logging.log( "ServerProxy.postInit()" );
+        super.postInit(e);
     }
 }
