@@ -1,7 +1,8 @@
-package miguknamja.pollution;
+package miguknamja.pollution.effects;
 
 import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.data.PollutionWorldData;
+import miguknamja.utils.Color;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,6 +47,16 @@ public class PollutionEffects {
 		return pdv.pollutionLevel < ( 0.1 * PollutionDataValue.maxPollutionLevel ); /* ignore anything below 10% of max for now */
 	}
 	
+	public static Color getFogColor( PollutionDataValue pdv ) {
+		double p = pdv.percent() / 100.0;
+		return( new Color( 199*p, 120*p, 72*p ) ); // dark brown/yellow color that scales with pollution
+	}
+	
+	public static float getFogDensity( PollutionDataValue pdv ) {
+		double p = pdv.percent() / 100.0;
+		return (float)(p * 0.6); // from 0.0 to 0.6, linear
+	}
+
 	private static Potion potion( PotionEffects effect ){ return Potion.getPotionById( effect.getValue() ); }
 	
 	private static void addPotionEffects( EntityLivingBase elb, PollutionDataValue pdv ) {

@@ -1,9 +1,11 @@
 package miguknamja.pollution.items;
 
 import miguknamja.pollution.Pollution;
-import miguknamja.pollution.PollutionEffects;
 import miguknamja.pollution.PollutionUpdater;
 import miguknamja.pollution.data.PollutionDataValue;
+import miguknamja.pollution.effects.PollutionEffects;
+import miguknamja.pollution.network.PacketHandler;
+import miguknamja.pollution.network.PacketSendPollution;
 import miguknamja.pollution.pollutersdb.PollutersDB;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,9 +50,19 @@ public class PollutionProbe extends Item {
 		if( !worldIn.isRemote ) { // execute server side only
 			BlockPos chunkPos = playerIn.getPosition();
 			PollutersDB.scan( worldIn, chunkPos );
-			PollutionDataValue p = PollutionUpdater.calcPollution( worldIn, chunkPos );
-			playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + p.getPollutionString()));
+			PollutionDataValue pdv = PollutionUpdater.calcPollution( worldIn, chunkPos );
+			playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + pdv.getPollutionString()));
 			PollutionEffects.apply(worldIn, chunkPos);
+			
+			// Send pollution data to the clients now
+			PacketHandler.INSTANCE.sendToAll(new PacketSendPollution(pdv));
+			
+			// FogDensity(EntityRenderer renderer, Entity entity, IBlockState state, double renderPartialTicks, float density)
+			//FogDensity fdev = new FogDensity(null, playerIn, null, 0.0, 0);
+			//MinecraftForge.EVENT_BUS.post( fdev );
+			
+			//FogColors fcev = new FogColors(null, playerIn, null, 0, 0, 0, 0);
+			//MinecraftForge.EVENT_BUS.post( fcev );
 			//System.out.println( PollutersDB.toStr() );
 		}
 

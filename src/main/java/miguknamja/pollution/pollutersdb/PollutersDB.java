@@ -4,7 +4,8 @@ package miguknamja.pollution.pollutersdb;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import miguknamja.pollution.ChunkKey;
+
+import miguknamja.utils.ChunkKey;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

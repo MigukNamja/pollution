@@ -21,6 +21,14 @@ public class PollutionDataValue {
 	public PollutionDataValue( String s ) {
 		pollutionLevel = Double.parseDouble( s );
 	}
+	
+	public double percent() {
+		return (100.0 * pollutionLevel) / maxPollutionLevel;
+	}
+	
+	public void setPercent( double percent ) {
+		pollutionLevel = (percent / 100.0) * maxPollutionLevel;
+	}
 
 	@Override
 	public String toString() {
@@ -28,7 +36,7 @@ public class PollutionDataValue {
 	}
 	
 	public String getPollutionString() {
-		return "Pollution Level: " + ((100.0 * pollutionLevel) / maxPollutionLevel) + "%";
+		return "Pollution Level: " + percent() + "%";
 	}
 }
 

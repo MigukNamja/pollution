@@ -43,7 +43,7 @@ public class WailaCompatibility implements IWailaDataProvider {
         if (registered)
             return;
         registered = true;
-        FMLInterModComms.sendMessage("Waila", "register", "mcjty.modtut.compat.waila.WailaCompatibility.load");
+        FMLInterModComms.sendMessage("Waila", "register", "miguknamja.pollution.compat.waila.WailaCompatibility.load");
     }
 
     @Override
