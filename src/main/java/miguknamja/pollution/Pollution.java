@@ -1,5 +1,7 @@
 package miguknamja.pollution;
 
+import org.apache.logging.log4j.Logger;
+
 import miguknamja.pollution.proxy.CommonProxy;
 import miguknamja.utils.Logging;
 import net.minecraftforge.fml.common.Mod;
@@ -12,15 +14,13 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 
-import org.apache.logging.log4j.Logger;
-
 @Mod(modid = Pollution.MODID, name = Pollution.MODNAME, version = Pollution.VERSION, dependencies = "required-after:Forge@["+Pollution.MIN_FORGE_VER+",)", useMetadata = true)
 public class Pollution
 {
     public static final String MODID = "pollution";
     public static final String MODNAME = "Pollution";
     public static final String MIN_FORGE_VER = "12.18.1.2011";
-    public static final String VERSION = "0.0.6";
+    public static final String VERSION = "0.0.7";
         
     @SidedProxy(clientSide = "miguknamja.pollution.proxy.ClientProxy", serverSide = "miguknamja.pollution.proxy.ServerProxy")
     public static CommonProxy proxy;

@@ -1,17 +1,17 @@
 package miguknamja.pollution.data;
 
+import miguknamja.pollution.Config;
+
 public class PollutionDataValue {
 	public double pollutionLevel;
-	public static final double minPollutionLevel = 0.0;
-	public static final double maxPollutionLevel = 2000.0; // TODO : read this value from a config
-	public static final PollutionDataValue defaultData = new PollutionDataValue( minPollutionLevel );
+	public static final PollutionDataValue defaultData = new PollutionDataValue( Config.minPollutionLevel );
 	
 	public void addTo( PollutionDataValue rhs ) {
 		this.pollutionLevel += rhs.pollutionLevel;
 	}
 	
 	public PollutionDataValue() {
-		pollutionLevel = minPollutionLevel;
+		pollutionLevel = Config.minPollutionLevel;
 	}
 
 	public PollutionDataValue( double p ) {
@@ -23,11 +23,11 @@ public class PollutionDataValue {
 	}
 	
 	public double percent() {
-		return (100.0 * pollutionLevel) / maxPollutionLevel;
+		return (100.0 * pollutionLevel) / Config.maxPollutionLevel;
 	}
 	
 	public void setPercent( double percent ) {
-		pollutionLevel = (percent / 100.0) * maxPollutionLevel;
+		pollutionLevel = (percent / 100.0) * Config.maxPollutionLevel;
 	}
 
 	@Override

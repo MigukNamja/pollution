@@ -4,10 +4,8 @@ import miguknamja.pollution.ModBlocks;
 import miguknamja.pollution.ModEntities;
 import miguknamja.pollution.ModItems;
 import miguknamja.pollution.Pollution;
-import miguknamja.pollution.blocks.bakedmodel.BakedModelLoader;
 import miguknamja.pollution.events.ClientEventHandler;
 import miguknamja.utils.Logging;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -21,7 +19,7 @@ public class ClientProxy extends CommonProxy {
         super.preInit(e);
 
         OBJLoader.INSTANCE.addDomain(Pollution.MODID);
-        ModelLoaderRegistry.registerLoader(new BakedModelLoader());
+        //ModelLoaderRegistry.registerLoader(new BakedModelLoader());
 
         // Typically initialization of models and such goes here:
         ModBlocks.initModels();

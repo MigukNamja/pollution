@@ -22,7 +22,7 @@ public class ClientEventHandler extends CommonEventHandler {
 		//event.setGreen( color.g );
 		//event.setBlue( color.b );
 		PollutionEffects.clientFog();
-		//System.out.println( "FogHandler.onFogColors(" + PollutionEffects.getFogDensity( pdv ) + ")" );
+		//Logging.log( "FogHandler.onFogColors(" + PollutionEffects.getFogDensity( pdv ) + ")" );
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -38,6 +38,6 @@ public class ClientEventHandler extends CommonEventHandler {
 		*/
 		PollutionEffects.clientFog();
 		event.setCanceled(true);
-		//System.out.println( "FogHandler.onFogDensity(" + PollutionEffects.getFogDensity( pdv ) + ")" );
+		//Logging.log( "FogHandler.onFogDensity(" + PollutionEffects.getFogDensity( pdv ) + ")" );
 	}
 }

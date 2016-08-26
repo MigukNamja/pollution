@@ -1,4 +1,4 @@
-package miguknamja.pollution.data;
+package miguknamja.utils;
 
 public class DimensionIdKey {
 	public DimensionIdKey(int dimensionId) {

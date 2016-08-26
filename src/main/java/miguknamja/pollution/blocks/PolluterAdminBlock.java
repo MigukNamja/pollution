@@ -33,17 +33,17 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PolluterBlock extends Block implements ITileEntityProvider, WailaInfoProvider {
+public class PolluterAdminBlock extends Block implements ITileEntityProvider, WailaInfoProvider {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-	public PolluterBlock() {
+	public PolluterAdminBlock() {
 		super(Material.ROCK);
-		setUnlocalizedName(Pollution.MODID + ".polluterblock");
-		setRegistryName("polluterblock");
+		setUnlocalizedName(Pollution.MODID + ".polluteradminblock");
+		setRegistryName("polluteradminblock");
 		GameRegistry.register(this);
 		GameRegistry.register(new ItemBlock(this), getRegistryName());
-		GameRegistry.registerTileEntity(PolluterTileEntity.class, Pollution.MODID + "_polluterblock");
+		GameRegistry.registerTileEntity(PolluterTileEntity.class, Pollution.MODID + "_polluteradminblock");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -81,10 +81,12 @@ public class PolluterBlock extends Block implements ITileEntityProvider, WailaIn
 
 			Chunk chunk = world.getChunkFromBlockCoords(pos);
 			if (side == state.getValue(FACING)) {
-				if (hitY < .5f) {
+				if (hitY <= .45f) {
 					PollutionWorldData.decrement(world, chunk);
-				} else {
+				} else if (hitY >= .55f) {
 					PollutionWorldData.increment(world, chunk);
+				} else {
+					return true;
 				}
 				
 				player.addChatComponentMessage(
@@ -129,20 +131,20 @@ public class PolluterBlock extends Block implements ITileEntityProvider, WailaIn
 
 	@Override
 	public int tickRate(World world) {
-		return 20 * 5;
+		return 20;
 	}
 	
 	@Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-		System.out.println("BlockAdded being called");
+		//Logging.log("BlockAdded being called");
     	worldIn.scheduleUpdate(pos, this, 0);
     }
     
 	
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		//System.out.println("UpdateTick being called");		
+		//Logging.log("UpdateTick being called");		
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 }

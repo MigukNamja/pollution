@@ -3,8 +3,10 @@ package miguknamja.pollution.data;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import miguknamja.pollution.Config;
 import miguknamja.pollution.Pollution;
 import miguknamja.utils.ChunkKey;
+import miguknamja.utils.DimensionIdKey;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -31,7 +33,7 @@ public class PollutionWorldData extends WorldSavedData {
   
   public static double decrement( World world, Chunk chunk ) {
 	  double pollution = getPollution( world, chunk ).pollutionLevel;
-	  if( pollution > PollutionDataValue.minPollutionLevel ) {
+	  if( pollution > Config.minPollutionLevel ) {
 		  setPollution( pollution - 100.0, world, chunk );
 	  }
 	  return pollution;
@@ -39,7 +41,7 @@ public class PollutionWorldData extends WorldSavedData {
 
   public static double increment( World world, Chunk chunk ) {
 	  double pollution = getPollution( world, chunk ).pollutionLevel;
-  	if( pollution < PollutionDataValue.maxPollutionLevel ) {
+  	if( pollution < Config.maxPollutionLevel ) {
   		setPollution( pollution + 100.0, world, chunk );
   	}
       return pollution;
@@ -53,7 +55,7 @@ public class PollutionWorldData extends WorldSavedData {
   }
 
   private static void setPollution( double newPollution, World world, Chunk chunk ) {
-	  if( newPollution < PollutionDataValue.minPollutionLevel || newPollution > PollutionDataValue.maxPollutionLevel ) {
+	  if( newPollution < Config.minPollutionLevel || newPollution > Config.maxPollutionLevel ) {
 		  return;
 	  } else {		  
 		  PollutionDataValue value = new PollutionDataValue( newPollution );
@@ -80,7 +82,7 @@ public class PollutionWorldData extends WorldSavedData {
   }
 
   public static double getPollutionPercent( World world, Chunk chunk ) {
-	  return 100.0 * getPollution(world, chunk).pollutionLevel / PollutionDataValue.maxPollutionLevel;
+	  return 100.0 * getPollution(world, chunk).pollutionLevel / Config.maxPollutionLevel;
   }
 
   public static String getPollutionString( World world, Chunk chunk ) {
