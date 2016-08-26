@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "pollution:polluterblock"
+    "model": "pollution:polluteradminblock"
   },
   "variants": {
     "normal": [{}],

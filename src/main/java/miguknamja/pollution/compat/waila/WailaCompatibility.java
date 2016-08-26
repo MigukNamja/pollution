@@ -6,7 +6,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
-import miguknamja.pollution.blocks.PolluterBlock;
+import miguknamja.pollution.blocks.PolluterAdminBlock;
+import miguknamja.utils.Logging;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -27,14 +28,14 @@ public class WailaCompatibility implements IWailaDataProvider {
     private static boolean loaded;
 
     public static void load(IWailaRegistrar registrar) {
-        System.out.println("WailaCompatibility.load");
+        Logging.log("WailaCompatibility.load");
         if (!registered){
             throw new RuntimeException("Please register this handler using the provided method.");
         }
         if (!loaded) {
-            registrar.registerHeadProvider(INSTANCE, PolluterBlock.class);
-            registrar.registerBodyProvider(INSTANCE, PolluterBlock.class);
-            registrar.registerTailProvider(INSTANCE, PolluterBlock.class);
+            registrar.registerHeadProvider(INSTANCE, PolluterAdminBlock.class);
+            registrar.registerBodyProvider(INSTANCE, PolluterAdminBlock.class);
+            registrar.registerTailProvider(INSTANCE, PolluterAdminBlock.class);
             loaded = true;
         }
     }

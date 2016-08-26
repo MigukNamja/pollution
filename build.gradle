@@ -34,7 +34,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "0.0.6"
+version = "0.0.7"
 group= "net.miguknamja.pollution" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "pollution"
 

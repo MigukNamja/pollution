@@ -7,6 +7,7 @@ import miguknamja.pollution.data.PollutersDB;
 import miguknamja.pollution.data.PollutersPerChunk;
 import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.data.PollutionWorldData;
+import miguknamja.utils.Logging;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -42,7 +43,7 @@ public class PollutionUpdater {
 			String        name  = te.getBlockType().getUnlocalizedName();
 			switch( name ) {
 
-			case "tile.furnace":
+			case PollutersDB.POLLUTER_FURNACE:
 				TileEntityFurnace furnace = (TileEntityFurnace)te;
 				if( furnace.isBurning() ){
 					int[] slots = furnace.getSlotsForFace(EnumFacing.DOWN);
@@ -52,8 +53,8 @@ public class PollutionUpdater {
 				}
 				break;
 
-			case "tile.pollution.polluterblock":
-				System.out.println( name );
+			case PollutersDB.POLLUTER_ADMINBLOCK:
+				Logging.log( name );
 				break;
 
 			default:
@@ -78,7 +79,7 @@ public class PollutionUpdater {
 		 * 
 		 * And, let's figure coal coke is 6400 in most packs
 		 */		
-		System.out.println( "burnTime " + burnTime );
+		//Logging.log( "burnTime " + burnTime );
 		
 		/* longer burn time is more efficient, i.e. pollutes less since it burns more efficiently */
 		return new PollutionDataValue( Math.sqrt( 6400.0 / burnTime ) );

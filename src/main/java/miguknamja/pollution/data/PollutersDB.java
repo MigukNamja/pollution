@@ -26,6 +26,9 @@ public class PollutersDB {
 		super();		
 	}
 
+	// TODO : Read these from a .json file
+	public static final String POLLUTER_FURNACE = "tile.furnace";
+	public static final String POLLUTER_ADMINBLOCK = "tile.pollution.polluteradminblock";
 	public static boolean isPolluter( TileEntity te ) {
 		String unlocalizedName = te.getBlockType().getUnlocalizedName();
 		if( registeredPolluters.contains(unlocalizedName) ) {
@@ -162,7 +165,6 @@ public class PollutersDB {
 		}		
 	}
 	
-	// TODO : Return the contents of the entire database as a string
 	public static String toStr() {
 		String s = new String();
 		

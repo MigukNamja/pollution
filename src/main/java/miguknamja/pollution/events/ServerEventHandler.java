@@ -1,4 +1,5 @@
 package miguknamja.pollution.events;
+import miguknamja.pollution.Config;
 import miguknamja.pollution.data.PollutersDB;
 import miguknamja.pollution.effects.PollutionEffects;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -33,11 +34,11 @@ public class ServerEventHandler extends CommonEventHandler {
     private void worldTick( WorldTickEvent event ) {
 		//Logging.log("ServerEventHandler.onServerTick( WorldTickEvent )" + ticks);	
 		
-		if( ticks % 100 == 0 ) { // Every 5 seconds. TODO : put this in a config file
+		if( ticks % Config.ticksPerPolluterTileEntityScan == 0 ) {
 			PollutersDB.scan( event.world );
 		}
 		
-		if( ticks % 20 == 0 ) { // Every 1 second. TODO : put this in a config file
+		if( ticks % Config.ticksPerPollutionUpdate == 0 ) {
 			PollutionEffects.apply( event.world );
 			
 			// Send pollution data to the clients now

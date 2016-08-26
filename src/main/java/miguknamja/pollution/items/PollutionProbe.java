@@ -38,8 +38,8 @@ public class PollutionProbe extends Item {
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		if( !worldIn.isRemote ) { // execute server side only
-			playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + "r-click"));
-			//	playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + getPollutionString()));
+			//playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + "r-click"));
+			//playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + getPollutionString()));
 		}
 		return super.onItemUse( stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ );
 	}

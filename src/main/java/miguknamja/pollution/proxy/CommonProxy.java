@@ -26,7 +26,7 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent e) {
     	Logging.log( "CommonProxy.preInit()" );
         File directory = e.getModConfigurationDirectory();
-        config = new Configuration(new File(directory.getPath(), "pollution.cfg"));
+        config = new Configuration(new File(directory.getPath() + File.separator + Pollution.MODID, Pollution.MODID+".cfg"));
         Config.readConfig();
 
         // Initialize our packet handler. Make sure the name is
@@ -55,8 +55,8 @@ public class CommonProxy {
             config.save();
         }
         
-    	// TODO : Read these from a config or .json file
-    	PollutersDB.registerPolluter("tile.furnace"); 
-		PollutersDB.registerPolluter("tile.pollution.polluterblock");
+    	// TODO : Read these from a .json file
+    	PollutersDB.registerPolluter(PollutersDB.POLLUTER_FURNACE); 
+		PollutersDB.registerPolluter(PollutersDB.POLLUTER_ADMINBLOCK);
     }
 }
