@@ -1,14 +1,22 @@
-.classpath
-.git
-.gitignore
+.git/
 .gradle/
-.project
 .settings/
 /bin/
 /build/
+/eclipse/
 /gradle/
-/gradlew
-/gradlew.bat
 /run/
+/gradlew
+.classpath
+.project
+/CREDITS-fml.txt
+/gradlew.bat
+/LICENSE-new.txt
+/MinecraftForge-Credits.txt
+/Paulscode IBXM Library License.txt
+/Paulscode SoundSystem CodecIBXM License.txt
 *.launch
+*.log
+
+
 
