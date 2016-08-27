@@ -36,6 +36,11 @@ public class PollutersDB {
 		}
 	}
 	
+	public static boolean contains( World world, Chunk chunk ) {
+		if( allPolluters.getOrDefault(ChunkKey.getKey(world, chunk),null) == null ) { return true; }
+		else { return false; }		
+	}
+	
 	public static void registerPolluter( TileEntity te ) {
 		String unlocalizedName = te.getBlockType().getUnlocalizedName();
 		registerPolluter( unlocalizedName );

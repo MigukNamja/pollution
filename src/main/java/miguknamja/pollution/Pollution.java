@@ -2,10 +2,13 @@ package miguknamja.pollution;
 
 import org.apache.logging.log4j.Logger;
 
+import miguknamja.pollution.data.PollutionWorldData;
+import miguknamja.pollution.effects.PollutionEffects;
 import miguknamja.pollution.proxy.CommonProxy;
 import miguknamja.utils.Logging;
 import miguknamja.utils.ModBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -23,7 +26,26 @@ public class Pollution implements ModBase
     public static final String MODNAME = "Pollution";
     public static final String MIN_FORGE_VER = "12.18.1.2011";
     public static final String VERSION = "0.0.8";
-        
+
+    public static void doPollution( World world ) {
+		// TODO : move all the code below into Pollution.java and called it something like 'mainLoop'
+		
+		// Generate pollution and do primary spreading
+		PollutionGeneration.generateFromPolluters( world );
+		
+		// Take into account weather and time of day on pollution
+		//PollutionWeather.applyWeather( world );
+
+		// Passively Dissipate (reduce) pollution
+		PollutionDissipation.dissipate( world );
+		
+		// Apply effects
+		PollutionEffects.apply( world );
+		
+		// Send pollution data to the clients
+		PollutionWorldData.updatePlayers( world );
+    }
+    
     @SidedProxy(clientSide = "miguknamja.pollution.proxy.ClientProxy", serverSide = "miguknamja.pollution.proxy.ServerProxy")
     public static CommonProxy proxy;
 

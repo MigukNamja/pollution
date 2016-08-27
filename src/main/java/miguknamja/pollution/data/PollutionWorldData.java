@@ -78,7 +78,26 @@ public class PollutionWorldData extends WorldSavedData {
 	  setPollution(newPdv, world, chunk);
 	  return newPdv;
   }  
+
+  public static PollutionDataValue decrease( PollutionDataValue delta, World world, Chunk chunk ) {
+	  return increase( delta.negative(), world, chunk );
+  }
   
+  /**
+   * Decrease pollution by a percent of the current pollution (not maximum !)
+   * 
+   * @param percentOfCurrent
+   * @param world
+   * @param chunk
+   * @return
+   */
+  public static PollutionDataValue decreasePercentOfCurrent( double percentOfCurrent, World world, Chunk chunk ) {
+	  PollutionDataValue curPdv = getPollution( world, chunk );
+	  PollutionDataValue newPdv = curPdv.mult(1.0-percentOfCurrent);
+	  setPollution(newPdv, world, chunk);
+	  return newPdv;	  
+  }
+
   /**
    * Calls decrementPercent
    * 

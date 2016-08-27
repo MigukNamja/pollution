@@ -1,9 +1,7 @@
 package miguknamja.pollution.events;
 import miguknamja.pollution.Config;
-import miguknamja.pollution.PollutionGeneration;
+import miguknamja.pollution.Pollution;
 import miguknamja.pollution.data.PollutersDB;
-import miguknamja.pollution.data.PollutionWorldData;
-import miguknamja.pollution.effects.PollutionEffects;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -31,14 +29,7 @@ public class ServerEventHandler extends CommonEventHandler {
 		}
 		
 		if( ticks % Config.ticksPerPollutionUpdate == 0 ) {
-			// Generate pollution and do primary spreading
-			PollutionGeneration.generateFromPolluters( event.world );
-			
-			// Apply effects
-			PollutionEffects.apply( event.world );
-			
-			// Send pollution data to the clients
-			PollutionWorldData.updatePlayers( event.world );
+			Pollution.doPollution( event.world );
 		}
 
 		ticks++;

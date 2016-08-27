@@ -34,6 +34,25 @@ public class PollutionDataValue {
 
 	/**
 	 * Immutable. Does not modify this. Instead, returns a new value.
+	 * @return new modified PollutionDataValue
+	 */
+	public PollutionDataValue negative() {
+		PollutionDataValue pdv = new PollutionDataValue( -this.pollutionLevel );
+		pdv.normalize();
+		return( pdv );
+	}
+	
+	/**
+	 * Returns true if pollution is at minimum
+	 * 
+	 * @return
+	 */
+	public boolean isClean() {
+		return this.pollutionLevel == Config.minPollutionLevel;
+	}
+	
+	/**
+	 * Immutable. Does not modify this. Instead, returns a new value.
 	 * @param rhs
 	 * @return new modified PollutionDataValue, which is different from this
 	 */
