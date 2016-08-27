@@ -14,7 +14,6 @@ import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.data.PollutionWorldData;
 import miguknamja.utils.ChunkKey;
 import miguknamja.utils.Color;
-import miguknamja.utils.Logging;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;

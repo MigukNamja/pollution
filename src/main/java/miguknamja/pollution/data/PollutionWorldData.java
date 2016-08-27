@@ -30,21 +30,58 @@ public class PollutionWorldData extends WorldSavedData {
 	  super(s);
 	  hashMap = new ConcurrentHashMap<ChunkKey, PollutionDataValue>();
   }
-  
-  public static double decrement( World world, Chunk chunk ) {
+    
+  /**
+   * Decrement by absolute amount.
+   * Will not cause pollution value to be less than the minimum value.
+   * If requested amount would take it below minimum value, pollution is set to minimum value instead.
+   * 
+   * @param world
+   * @param chunk
+   * @param absoluteDecrease
+   * @return updated pollution absolute value
+   */
+  public static double changeAbsolute( World world, Chunk chunk, double absoluteChange ) {
 	  double pollution = getPollution( world, chunk ).pollutionLevel;
-	  if( pollution > Config.minPollutionLevel ) {
-		  setPollution( pollution - 100.0, world, chunk );
-	  }
-	  return pollution;
+	  double newValue = pollution + absoluteChange;
+	  if( newValue < Config.minPollutionLevel ){ newValue = Config.minPollutionLevel; }
+	  else if( newValue > Config.maxPollutionLevel ){ newValue = Config.maxPollutionLevel; }
+	  setPollution( newValue, world, chunk );
+	  return newValue;
+  }
+
+  /**
+   * Change by percentage of maximum, where percentage is >= -100.0 and <= 100.0
+   * Will not cause pollution value to be less than the minimum value or greater than maximum value.
+   * If requested amount would take it below minimum value, pollution is set to minimum value instead.
+   * If requested amount would take it above maximum value, pollution is set to maximum value instead.
+   * 
+   * For example, if current pollution is 75% and 'percentage' is -50.0, the new pollution will be 25%.
+   * If current pollution is 75% and 'percentage' is 50.0, the new pollution will be 100%.
+   *  
+   * @param world
+   * @param chunk
+   * @param percentage
+   * @return updated pollution absolute value
+   */
+  public static double changePercent( World world, Chunk chunk, double percentage ) {
+	  double absoluteAmount = ((percentage / 100.0) * Config.maxPollutionLevel);
+	  return changeAbsolute( world, chunk, absoluteAmount );
+  }  
+
+  /**
+   * Calls decrementPercent
+   * 
+   * @param world
+   * @param chunk
+   * @return updated pollution absolute value
+   */
+  public static double decrement( World world, Chunk chunk ) {
+	  return changePercent( world, chunk, -1.0 );
   }
 
   public static double increment( World world, Chunk chunk ) {
-	  double pollution = getPollution( world, chunk ).pollutionLevel;
-  	if( pollution < Config.maxPollutionLevel ) {
-  		setPollution( pollution + 100.0, world, chunk );
-  	}
-      return pollution;
+	  return changePercent( world, chunk, 1.0 );
   }
 
   /*
