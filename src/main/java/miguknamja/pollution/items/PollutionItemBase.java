@@ -13,7 +13,7 @@ public abstract class PollutionItemBase extends Item {
     public PollutionItemBase(String name) {
         setUnlocalizedName(Pollution.MODID+"."+name);
         setRegistryName(name);
-        setCreativeTab(Pollution.tabPollution);
+        //setCreativeTab(Pollution.tabPollution);
         GameRegistry.register(this);
     }
 

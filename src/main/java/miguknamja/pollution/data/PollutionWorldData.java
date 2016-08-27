@@ -5,8 +5,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import miguknamja.pollution.Config;
 import miguknamja.pollution.Pollution;
+import miguknamja.pollution.network.PacketHandler;
+import miguknamja.pollution.network.PacketSendPollution;
 import miguknamja.utils.ChunkKey;
 import miguknamja.utils.DimensionIdKey;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -24,11 +27,11 @@ public class PollutionWorldData extends WorldSavedData {
   // Required constructors
   public PollutionWorldData() {
 	  super(DATA_NAME);
-	  hashMap = new ConcurrentHashMap<ChunkKey, PollutionDataValue>();
+	  pollutedChunks = new ConcurrentHashMap<ChunkKey, PollutionDataValue>();
   }
   public PollutionWorldData(String s) {
 	  super(s);
-	  hashMap = new ConcurrentHashMap<ChunkKey, PollutionDataValue>();
+	  pollutedChunks = new ConcurrentHashMap<ChunkKey, PollutionDataValue>();
   }
     
   /**
@@ -69,6 +72,13 @@ public class PollutionWorldData extends WorldSavedData {
 	  return changeAbsolute( world, chunk, absoluteAmount );
   }  
 
+  public static PollutionDataValue increase( PollutionDataValue delta, World world, Chunk chunk ) {
+	  PollutionDataValue curPdv = getPollution( world, chunk );
+	  PollutionDataValue newPdv = curPdv.add(delta);
+	  setPollution(newPdv, world, chunk);
+	  return newPdv;
+  }  
+  
   /**
    * Calls decrementPercent
    * 
@@ -100,7 +110,7 @@ public class PollutionWorldData extends WorldSavedData {
 		  /* 1 instance of the PollutionWorldData per dimension */
 		  ChunkKey key = ChunkKey.getKey( world, chunk );
 		  PollutionWorldData instance = get( world );
-		  instance.hashMap.put( key, value );
+		  instance.pollutedChunks.put( key, value );
 		  
 		  /* Mark for saving in NBT */
 		  instance.markDirty();
@@ -115,7 +125,7 @@ public class PollutionWorldData extends WorldSavedData {
 	  /* 1 instance of the PollutionWorldData per dimension */
 	  ChunkKey key = ChunkKey.getKey( world, chunk );
 	  PollutionWorldData instance = get( world );
-	  return instance.hashMap.getOrDefault( key, PollutionDataValue.defaultData );
+	  return instance.pollutedChunks.getOrDefault( key, PollutionDataValue.defaultData );
   }
 
   public static double getPollutionPercent( World world, Chunk chunk ) {
@@ -135,7 +145,7 @@ public class PollutionWorldData extends WorldSavedData {
 	  while( i < tagList.tagCount() ) {
 		  ChunkKey     key = new ChunkKey  ( tagList.getStringTagAt(i++) );
 		  PollutionDataValue value = new PollutionDataValue( tagList.getStringTagAt(i++) );
-		  hashMap.put( key, value );
+		  pollutedChunks.put( key, value );
 	  }
   }
 
@@ -145,7 +155,7 @@ public class PollutionWorldData extends WorldSavedData {
 	  NBTTagList tagList = new NBTTagList();
 	  nbt.setTag( DATA_NAME, tagList );
 	  
-      for( Map.Entry<ChunkKey, PollutionDataValue> entry : hashMap.entrySet()){
+      for( Map.Entry<ChunkKey, PollutionDataValue> entry : pollutedChunks.entrySet()){
     	  String key   = entry.getKey().toString();
     	  String value = entry.getValue().toString();
 		  tagList.appendTag(new NBTTagString(key));
@@ -154,12 +164,12 @@ public class PollutionWorldData extends WorldSavedData {
 	  
 	  return nbt;
   }
-
+  
   /* Required by WorldSavedData */
   public static PollutionWorldData get( World world ) {
 	  int dim = world.provider.getDimension();
 	  MapStorage thisDimensionStorage = world.getMapStorage();
-	  
+
 	  /* Try the hashMap first */
 	  DimensionIdKey dimKey = new DimensionIdKey( dim );
 	  PollutionWorldData instance = instanceByDimension.getOrDefault( dimKey, null );
@@ -177,7 +187,20 @@ public class PollutionWorldData extends WorldSavedData {
 	  return instance;
   }
   
-  private ConcurrentHashMap<ChunkKey, PollutionDataValue> hashMap;  
+  public static void updatePlayers( World world ) {
+	  //Predicate<EntityPlayerMP> filter = (p)-> true;
+	  for( EntityPlayerMP player : world.getPlayers( EntityPlayerMP.class, (p)-> true ) ) {
+		  Chunk chunk = world.getChunkFromBlockCoords( player.getPosition() );
+		  PollutionDataValue pdv = getPollution( world, chunk );
+		  PacketHandler.INSTANCE.sendTo(new PacketSendPollution(pdv), player);
+	  }		
+  }
+  
+  public static ConcurrentHashMap<ChunkKey, PollutionDataValue> getPollutedChunks( World world ) {
+	  return get( world ).pollutedChunks;
+  }
+  
+  private ConcurrentHashMap<ChunkKey, PollutionDataValue> pollutedChunks;  
   private static ConcurrentHashMap<DimensionIdKey, PollutionWorldData> instanceByDimension = new ConcurrentHashMap<DimensionIdKey, PollutionWorldData>();
   public static final int NBT_TAG_STRING = 8; // Reference : http://wiki.vg/NBT
 }
