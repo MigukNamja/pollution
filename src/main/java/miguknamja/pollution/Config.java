@@ -30,6 +30,7 @@ public class Config {
 	
     private static final String CATEGORY_POLLUTION_REDUCTION = "mechanics to limit or reduce pollution";    
 	public static double handheldFanCleanupFactor = 0.1;
+	public static double dissipationFactor = 0.1;
     
     public static void readConfig() {
         Configuration cfg = CommonProxy.config;
@@ -70,6 +71,7 @@ public class Config {
 
         cfg.addCustomCategoryComment(CATEGORY_POLLUTION_REDUCTION, "Mechanics to limit or reduce pollution");
         handheldFanCleanupFactor = (double)cfg.getFloat("handheldFanCleanupFactor", CATEGORY_PLAYER_POLLUTION_EFFECTS, (float)handheldFanCleanupFactor, 0.0f, 100.0f, "Handheld fan cleanup factor. Lower is slower. Set to 0.0 to entirely disable the mechanism.");
+        dissipationFactor = (double)cfg.getFloat("dissipationFactor", CATEGORY_PLAYER_POLLUTION_EFFECTS, (float)dissipationFactor, 0.0f, 100.0f, "Percentage of pollution that dissapates (disappears) from each polluted chunk each update period.");
     }
 
     
