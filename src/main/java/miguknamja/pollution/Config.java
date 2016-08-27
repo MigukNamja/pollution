@@ -47,11 +47,13 @@ public class Config {
         ticksPerPolluterTileEntityScan = cfg.getInt("ticksPerPolluterTileEntityScan", CATEGORY_GENERAL, ticksPerPolluterTileEntityScan, 20, ticksPerPolluterTileEntityScan*10, "Ticks per new polluter tile entity scan");
         ticksPerPollutionUpdate = cfg.getInt("ticksPerPollutionUpdate", CATEGORY_GENERAL, ticksPerPollutionUpdate, 1, ticksPerPollutionUpdate*10, "Ticks per new pollution measuring and application scan");
         
+        cfg.addCustomCategoryComment(CATEGORY_POLLUTION_LEVELS, "Pollution Levels configuration");
         minPollutionLevel = (double)cfg.getFloat("minPollutionLevel", CATEGORY_POLLUTION_LEVELS, (float)minPollutionLevel, 0f, (float)maxPollutionLevel/10f, "Minimum absolute pollution level. Recommend this stays at 0");
         maxPollutionLevel = (double)cfg.getFloat("maxPollutionLevel", CATEGORY_POLLUTION_LEVELS, (float)maxPollutionLevel, 0f, (float)maxPollutionLevel*10, "Maximum absolute pollution level. Recommend this stays at " + maxPollutionLevel);
 
-        doPotionEffects = cfg.getBoolean("doPotionEffects", CATEGORY_PLAYER_POLLUTION_EFFECTS, doPotionEffects, "true to enable player potion effects, false to disable");
-        doSmogEffect = cfg.getBoolean("doFogEffects", CATEGORY_PLAYER_POLLUTION_EFFECTS, doSmogEffect, "true to enable smog, false to disable");
+        cfg.addCustomCategoryComment(CATEGORY_PLAYER_POLLUTION_EFFECTS, "Pollution player effects configuration");
+        doPotionEffects = cfg.getBoolean("doPotionEffects", CATEGORY_PLAYER_POLLUTION_EFFECTS, doPotionEffects, "'true' to enable pollution (negative) effects such as poison, slowness, wither, etc.; 'false' to disable");
+        doSmogEffect = cfg.getBoolean("doFogEffects", CATEGORY_PLAYER_POLLUTION_EFFECTS, doSmogEffect, "'true' to enable smog, 'false' to disable");
         minimumPollutionThreshold = (double)cfg.getFloat("minimumPollutionThreshold", CATEGORY_POLLUTION_LEVELS, (float)minimumPollutionThreshold, 0f, 100f, "Threshold percentage above which pollution effects are applied. 0.0 to always apply. 100.0 to disable.");
         defaultPotionStrength = cfg.getInt("defaultPotionStrength", CATEGORY_PLAYER_POLLUTION_EFFECTS, defaultPotionStrength, 1, 5, "Default player effect potion strength (amplifier) for negative effects like poison");
         defaultPotionDuration = cfg.getInt("defaultPotionDuration", CATEGORY_PLAYER_POLLUTION_EFFECTS, defaultPotionDuration, 1, 60, "Default player effect potion duration in seconds");

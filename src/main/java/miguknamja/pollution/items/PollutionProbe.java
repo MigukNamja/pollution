@@ -1,11 +1,9 @@
 package miguknamja.pollution.items;
 
-import miguknamja.pollution.Pollution;
 import miguknamja.pollution.PollutionUpdater;
 import miguknamja.pollution.data.PollutionDataValue;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -16,22 +14,13 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PollutionProbe extends Item {
+public class PollutionProbe extends PollutionItemBase {
 
-	public PollutionProbe() {
-		setRegistryName("pollutionprobe");
-		setUnlocalizedName(Pollution.MODID + ".pollutionprobe");
-		GameRegistry.register(this);
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void initModel() {
-		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+    public PollutionProbe() {
+		super("pollutionprobe");
+		setMaxStackSize(1);	    
 	}
 
 	@Override
@@ -57,5 +46,10 @@ public class PollutionProbe extends Item {
 		}
 
 		return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
+	}
+	
+	@Override
+	public void initCrafting(){
+		GameRegistry.addRecipe(new ItemStack(this), new Object[] {"###", "#^#", "#c#", '#', Items.IRON_INGOT, '^', Items.COMPASS, 'c', Items.COMPARATOR});
 	}
 }

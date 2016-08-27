@@ -1,5 +1,6 @@
-tile.pollution.polluterblock.name=Polluter Block
+tile.pollution.polluteradminblock.name=Polluter Block
 item.pollution.pollutionprobe.name=Pollution Probe
+item.pollution.handfan.name=Hand Fan
 
 key.categories.pollution=Pollution
 key.tutorial=Pollution

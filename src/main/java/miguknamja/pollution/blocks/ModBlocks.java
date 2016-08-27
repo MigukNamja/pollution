@@ -1,6 +1,5 @@
-package miguknamja.pollution;
+package miguknamja.pollution.blocks;
 
-import miguknamja.pollution.blocks.PolluterAdminBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -21,6 +20,5 @@ public class ModBlocks {
 
     @SideOnly(Side.CLIENT)
     public static void initItemModels() {
-
     }
 }

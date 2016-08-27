@@ -3,13 +3,13 @@ package miguknamja.pollution.proxy;
 import java.io.File;
 
 import miguknamja.pollution.Config;
-import miguknamja.pollution.ModBlocks;
 import miguknamja.pollution.ModEntities;
-import miguknamja.pollution.ModItems;
 import miguknamja.pollution.Pollution;
+import miguknamja.pollution.blocks.ModBlocks;
 import miguknamja.pollution.compat.MainCompatHandler;
 import miguknamja.pollution.data.PollutersDB;
 import miguknamja.pollution.events.ServerEventHandler;
+import miguknamja.pollution.items.ModItems;
 import miguknamja.pollution.network.PacketHandler;
 import miguknamja.utils.Logging;
 import net.minecraftforge.common.MinecraftForge;
@@ -37,10 +37,8 @@ public class CommonProxy {
         ModBlocks.init();
         ModItems.init();
         ModEntities.init();
-        //ModDimensions.init();
 
         MainCompatHandler.registerWaila();
-        //MainCompatHandler.registerTOP();        
     }
 
     public void init(FMLInitializationEvent e) {
