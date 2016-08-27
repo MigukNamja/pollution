@@ -8,12 +8,11 @@ import org.lwjgl.opengl.GL11;
 
 import miguknamja.pollution.Config;
 import miguknamja.pollution.data.ClientData;
-import miguknamja.pollution.data.PollutersDB;
-import miguknamja.pollution.data.PollutersPerChunk;
 import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.data.PollutionWorldData;
 import miguknamja.utils.ChunkKey;
 import miguknamja.utils.Color;
+import miguknamja.utils.Logging;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
@@ -51,15 +50,16 @@ public class PollutionEffects {
 	}
 	
 	/*
-	 * Calls apply() for every chunk in this world
+	 * Calls apply() for every polluted chunk in this world
 	 */
 	public static void apply( World world ) {
 		if( world.isRemote ){ return; } // don't run on the client
 
-		// Iterate over all chunks we know we have polluters in
-		for( Map.Entry<ChunkKey,PollutersPerChunk> entry : PollutersDB.allPolluters.entrySet() ) {
+		// Iterate over all chunks we know that has pollution in it
+		for( Map.Entry<ChunkKey,PollutionDataValue> entry : PollutionWorldData.getPollutedChunks(world).entrySet() ) {
 			ChunkKey chunkKey = entry.getKey();
 			apply( world, world.getChunkFromChunkCoords(chunkKey.xPosition, chunkKey.zPosition) );
+			Logging.log( "PollutionEffects.apply() : x(" + chunkKey.xPosition + ") z(" + chunkKey.zPosition + ") pollution(" + PollutionWorldData.getPollutionString(world, world.getChunkFromChunkCoords(chunkKey.xPosition, chunkKey.zPosition)) + ")");
 		}		
 		//Logging.log( "PollutionEffects.apply()" );
 	}

@@ -5,9 +5,42 @@ import miguknamja.pollution.Config;
 public class PollutionDataValue {
 	public double pollutionLevel;
 	public static final PollutionDataValue defaultData = new PollutionDataValue( Config.minPollutionLevel );
+
+	public void normalize() {
+		if( pollutionLevel < Config.minPollutionLevel ){ pollutionLevel = Config.minPollutionLevel; }
+		else if( pollutionLevel > Config.maxPollutionLevel ){ pollutionLevel = Config.maxPollutionLevel; }
+	}
 	
+	/**
+	 * Mutable. Warning : modifies this !
+	 * @param rhs
+	 * @return
+	 */
 	public void addTo( PollutionDataValue rhs ) {
 		this.pollutionLevel += rhs.pollutionLevel;
+		normalize();
+	}
+	
+	/**
+	 * Immutable. Does not modify this. Instead, returns a new value.
+	 * @param rhs
+	 * @return new modified PollutionDataValue, which is different from this
+	 */
+	public PollutionDataValue add( PollutionDataValue that ) {
+		PollutionDataValue pdv = new PollutionDataValue( this.pollutionLevel + that.pollutionLevel );
+		pdv.normalize();
+		return( pdv );
+	}
+
+	/**
+	 * Immutable. Does not modify this. Instead, returns a new value.
+	 * @param rhs
+	 * @return new modified PollutionDataValue, which is different from this
+	 */
+	public PollutionDataValue mult( double factor ) {
+		PollutionDataValue pdv = new PollutionDataValue( this.pollutionLevel * factor );
+		pdv.normalize();
+		return( pdv );
 	}
 	
 	public PollutionDataValue() {

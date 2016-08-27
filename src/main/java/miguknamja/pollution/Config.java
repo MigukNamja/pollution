@@ -14,6 +14,7 @@ public class Config {
     private static final String CATEGORY_POLLUTION_LEVELS = "pollution levels";    
 	public static double minPollutionLevel = 0.0;
 	public static double maxPollutionLevel = 2000.0;
+	public static double primaryPollutionSpreadFactor = 0.25;
 	
     private static final String CATEGORY_PLAYER_POLLUTION_EFFECTS = "player pollution effects";    
     public static boolean doPotionEffects = true;
@@ -26,6 +27,9 @@ public class Config {
 	public static int defaultSmogColor_B = 72;	
 	public static float defaultSmogDensity = 0.4f; // change to 0.6f if changing GL11Mode to GL_EXP or GL_LINEAR
 	public static String defaultSmogGL11Mode = "GL_EXP2";
+	
+    private static final String CATEGORY_POLLUTION_REDUCTION = "mechanics to limit or reduce pollution";    
+	public static double handheldFanCleanupFactor = 0.1;
     
     public static void readConfig() {
         Configuration cfg = CommonProxy.config;
@@ -50,6 +54,7 @@ public class Config {
         cfg.addCustomCategoryComment(CATEGORY_POLLUTION_LEVELS, "Pollution Levels configuration");
         minPollutionLevel = (double)cfg.getFloat("minPollutionLevel", CATEGORY_POLLUTION_LEVELS, (float)minPollutionLevel, 0f, (float)maxPollutionLevel/10f, "Minimum absolute pollution level. Recommend this stays at 0");
         maxPollutionLevel = (double)cfg.getFloat("maxPollutionLevel", CATEGORY_POLLUTION_LEVELS, (float)maxPollutionLevel, 0f, (float)maxPollutionLevel*10, "Maximum absolute pollution level. Recommend this stays at " + maxPollutionLevel);
+        primaryPollutionSpreadFactor = (double)cfg.getFloat("primaryPollutionSpreadFactor", CATEGORY_POLLUTION_LEVELS, (float)primaryPollutionSpreadFactor, 0.0f, 0.5f, "When pollution is generated, the percentage that immediately spreads to adjacent areas (chunks)");
 
         cfg.addCustomCategoryComment(CATEGORY_PLAYER_POLLUTION_EFFECTS, "Pollution player effects configuration");
         doPotionEffects = cfg.getBoolean("doPotionEffects", CATEGORY_PLAYER_POLLUTION_EFFECTS, doPotionEffects, "'true' to enable pollution (negative) effects such as poison, slowness, wither, etc.; 'false' to disable");
@@ -62,6 +67,9 @@ public class Config {
         defaultSmogColor_B = cfg.getInt("defaultSmogColor_B", CATEGORY_PLAYER_POLLUTION_EFFECTS, defaultSmogColor_B, 0, 255, "Smog color B value. Default color is light brown.");
         defaultSmogDensity = cfg.getFloat("defaultSmogDensity", CATEGORY_PLAYER_POLLUTION_EFFECTS, defaultSmogDensity, 0f, 1f, "Smog density to pass to GL11.glFogf(GL11.GL_FOG_DENSITY, density)");
         defaultSmogGL11Mode = cfg.getString("defaultSmogGL11Mode", CATEGORY_PLAYER_POLLUTION_EFFECTS, defaultSmogGL11Mode, "OpenGL GL11 fog mode for smog. Valid values are GL_LINEAR, GL_EXP, and GL_EXP2.");
+
+        cfg.addCustomCategoryComment(CATEGORY_POLLUTION_REDUCTION, "Mechanics to limit or reduce pollution");
+        handheldFanCleanupFactor = (double)cfg.getFloat("handheldFanCleanupFactor", CATEGORY_PLAYER_POLLUTION_EFFECTS, (float)handheldFanCleanupFactor, 0.0f, 100.0f, "Handheld fan cleanup factor. Lower is slower. Set to 0.0 to entirely disable the mechanism.");
     }
 
     

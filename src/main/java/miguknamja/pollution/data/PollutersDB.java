@@ -5,10 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import miguknamja.pollution.network.PacketHandler;
-import miguknamja.pollution.network.PacketSendPollution;
 import miguknamja.utils.ChunkKey;
-import net.minecraft.entity.player.EntityPlayerMP;
+import miguknamja.utils.Logging;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -159,7 +157,7 @@ public class PollutersDB {
 			BlockPos  pos = entry.getKey();
 			TileEntity te = entry.getValue();
 			if( isPolluter( te ) ) {
-				//Logging.log( "Found Polluter " + te.getBlockType().getUnlocalizedName() + " at " + pos.toString() );
+				Logging.log( "Found Polluter " + te.getBlockType().getUnlocalizedName() + " at " + pos.toString() );
 				addPolluterInstance( world, pos, te );
 			}
 		}		
@@ -177,14 +175,5 @@ public class PollutersDB {
 		}
 		s += "}\r\n";
 		return s;
-	}
-
-	public static void updatePlayers( World world ) {
-		//Predicate<EntityPlayerMP> filter = (p)-> true;
-		for( EntityPlayerMP player : world.getPlayers( EntityPlayerMP.class, (p)-> true ) ) {
-			Chunk chunk = world.getChunkFromBlockCoords( player.getPosition() );
-			PollutionDataValue pdv = PollutionWorldData.getPollution( world, chunk );
-			PacketHandler.INSTANCE.sendTo(new PacketSendPollution(pdv), player);
-		}		
 	}
 }

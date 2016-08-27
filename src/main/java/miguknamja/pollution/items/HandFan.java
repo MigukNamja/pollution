@@ -1,5 +1,6 @@
 package miguknamja.pollution.items;
 
+import miguknamja.pollution.Config;
 import miguknamja.pollution.data.PollutionWorldData;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +36,7 @@ public class HandFan extends PollutionItemBase {
     	if( !worldIn.isRemote ) { // execute server side only
     		BlockPos pos = entityLiving.getPosition();
     		Chunk chunk = worldIn.getChunkFromBlockCoords(pos);
-    		PollutionWorldData.changePercent(worldIn, chunk, -0.1); // Decrease by 0.1%
+    		PollutionWorldData.changePercent(worldIn, chunk, -Config.handheldFanCleanupFactor); // handheldFanCleanupFactor is positive. However, to decrease pollution, we need to make it negative
     		String pollution = PollutionWorldData.getPollutionString(worldIn, chunk);
     		if( entityLiving instanceof EntityPlayer )
     		{
