@@ -12,13 +12,12 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 
+@SuppressWarnings("unused")
 public class HandFan extends PollutionItemBase {
 
 	public HandFan() {
@@ -36,13 +35,13 @@ public class HandFan extends PollutionItemBase {
     	if( !worldIn.isRemote ) { // execute server side only
     		BlockPos pos = entityLiving.getPosition();
     		Chunk chunk = worldIn.getChunkFromBlockCoords(pos);
-    		PollutionWorldData.changePercent(worldIn, chunk, -Config.handheldFanCleanupFactor); // handheldFanCleanupFactor is positive. However, to decrease pollution, we need to make it negative
-    		String pollution = PollutionWorldData.getPollutionString(worldIn, chunk);
+    		PollutionWorldData.changePercent(-Config.handheldFanCleanupFactor, worldIn, chunk); // handheldFanCleanupFactor is positive. However, to decrease pollution, we need to make it negative
+			String pollution = PollutionWorldData.getPollutionString(worldIn, chunk);
     		if( entityLiving instanceof EntityPlayer )
     		{
-    			EntityPlayer playerIn = (EntityPlayer)entityLiving;
+				EntityPlayer playerIn = (EntityPlayer)entityLiving;
     			if( !worldIn.isRemote ) { // execute server side only
-    				playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.WHITE + "Pollution is now " + pollution));
+    				//playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.WHITE + "Pollution is now " + pollution));
     			}
     		}
     	}

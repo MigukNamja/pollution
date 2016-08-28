@@ -20,6 +20,8 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
+import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 
 public class PollutionEffects {
 	/*
@@ -59,7 +61,8 @@ public class PollutionEffects {
 		for( Map.Entry<ChunkKey,PollutionDataValue> entry : PollutionWorldData.getPollutedChunks(world).entrySet() ) {
 			ChunkKey chunkKey = entry.getKey();
 			apply( world, world.getChunkFromChunkCoords(chunkKey.xPosition, chunkKey.zPosition) );
-			Logging.log( "PollutionEffects.apply() : x(" + chunkKey.xPosition + ") z(" + chunkKey.zPosition + ") pollution(" + PollutionWorldData.getPollutionString(world, world.getChunkFromChunkCoords(chunkKey.xPosition, chunkKey.zPosition)) + ")");
+			String percent = String.format("%.2f", PollutionWorldData.getPollutionPercent(world, world.getChunkFromChunkCoords(chunkKey.xPosition, chunkKey.zPosition)));
+			Logging.log( "PollutionEffects.apply() : x(" + chunkKey.xPosition + ") z(" + chunkKey.zPosition + ") pollution(" + percent + "%)");
 		}		
 		//Logging.log( "PollutionEffects.apply()" );
 	}
@@ -181,12 +184,14 @@ public class PollutionEffects {
             fogColours.flip();
         }
 
-		GL11.glDisable( GL11.GL_FOG );
+        GL11.glPushMatrix();
+		//GL11.glDisable( GL11.GL_FOG );
 		GL11.glFogi(GL11.GL_FOG_MODE, glFogMode());
         GL11.glFog(GL11.GL_FOG_COLOR, fogColours );
 		GL11.glFogf(GL11.GL_FOG_DENSITY, density);
         GL11.glHint( GL11.GL_FOG_HINT, GL11.GL_FASTEST );
-        GL11.glEnable( GL11.GL_FOG );        
+        GL11.glEnable( GL11.GL_FOG );
+        GL11.glPopMatrix();
 	}
 	
 	private static int glFogMode() {
@@ -222,5 +227,23 @@ public class PollutionEffects {
 		} 
 		
 		return curDensity;
+	}
+
+	public static void setFogColor(FogColors event) {
+		PollutionDataValue pdv = ClientData.pdv;
+		Color color = getFogColor( pdv );
+		event.setRed( color.r / 255f );
+		event.setGreen( color.g / 255f );
+		event.setBlue( color.b / 255f );
+		//PollutionEffects.clientFog();
+	}
+
+	public static void setFogDensity(FogDensity event) {
+		PollutionDataValue pdv = ClientData.pdv;
+		Float density = slewDensity( PollutionEffects.getFogDensity( pdv ) );
+		event.setDensity( density );
+
+		//PollutionEffects.clientFog();
+		event.setCanceled(true);
 	}
 }

@@ -22,9 +22,9 @@ public class Config {
     public static double minimumPollutionThreshold = 0.1;
 	public static int defaultPotionStrength = 3;
 	public static int defaultPotionDuration = 5;
-	public static int defaultSmogColor_R = 200;
-	public static int defaultSmogColor_G = 120;
-	public static int defaultSmogColor_B = 72;	
+	public static int defaultSmogColor_R = 96;
+	public static int defaultSmogColor_G = 85;
+	public static int defaultSmogColor_B = 31;	
 	public static float defaultSmogDensity = 0.4f; // change to 0.6f if changing GL11Mode to GL_EXP or GL_LINEAR
 	public static String defaultSmogGL11Mode = "GL_EXP2";
 	

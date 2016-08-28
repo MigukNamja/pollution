@@ -33,7 +33,20 @@ public class PollutionWorldData extends WorldSavedData {
 	  super(s);
 	  pollutedChunks = new ConcurrentHashMap<ChunkKey, PollutionDataValue>();
   }
-    
+
+  public static void clear( World world, Chunk chunk ) {
+	  setPollution( new PollutionDataValue(), world, chunk );
+  }
+  public static void clear( World world ) {
+	  /*
+      for( Map.Entry<ChunkKey, PollutionDataValue> entry : get(world).pollutedChunks.entrySet()){
+    	  ChunkKey key   = entry.getKey();
+    	  clear( world, key.getChunk( world ) );
+      }
+      */
+	  get(world).pollutedChunks.clear();
+  }
+  
   /**
    * Decrement by absolute amount.
    * Will not cause pollution value to be less than the minimum value.
@@ -44,7 +57,7 @@ public class PollutionWorldData extends WorldSavedData {
    * @param absoluteDecrease
    * @return updated pollution absolute value
    */
-  public static double changeAbsolute( World world, Chunk chunk, double absoluteChange ) {
+  public static double changeAbsolute( double absoluteChange, World world, Chunk chunk ) {
 	  double pollution = getPollution( world, chunk ).pollutionLevel;
 	  double newValue = pollution + absoluteChange;
 	  if( newValue < Config.minPollutionLevel ){ newValue = Config.minPollutionLevel; }
@@ -67,9 +80,9 @@ public class PollutionWorldData extends WorldSavedData {
    * @param percentage
    * @return updated pollution absolute value
    */
-  public static double changePercent( World world, Chunk chunk, double percentage ) {
+  public static double changePercent( double percentage, World world, Chunk chunk ) {
 	  double absoluteAmount = ((percentage / 100.0) * Config.maxPollutionLevel);
-	  return changeAbsolute( world, chunk, absoluteAmount );
+	  return changeAbsolute( absoluteAmount, world, chunk );
   }  
 
   public static PollutionDataValue increase( PollutionDataValue delta, World world, Chunk chunk ) {
@@ -99,25 +112,29 @@ public class PollutionWorldData extends WorldSavedData {
   }
 
   /**
-   * Calls decrementPercent
+   * Calls changePercent
    * 
    * @param world
    * @param chunk
    * @return updated pollution absolute value
    */
   public static double decrement( World world, Chunk chunk ) {
-	  return changePercent( world, chunk, -1.0 );
+	  return changePercent( -1.0, world, chunk );
   }
 
   public static double increment( World world, Chunk chunk ) {
-	  return changePercent( world, chunk, 1.0 );
+	  return changePercent( 1.0, world, chunk );
   }
 
   /*
    * All updates to pollution levels should ultimately come through here
    */
   public static void setPollution( PollutionDataValue pdv, World world, Chunk chunk ) {
-	  setPollution( pdv.pollutionLevel, world, chunk );
+	  if( pdv.isClean() ) {
+		  get( world ).pollutedChunks.remove(ChunkKey.getKey(world, chunk));
+	  } else {
+		  setPollution( pdv.pollutionLevel, world, chunk );
+	  }
   }
 
   private static void setPollution( double newPollution, World world, Chunk chunk ) {

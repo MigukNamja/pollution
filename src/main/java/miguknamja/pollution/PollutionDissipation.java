@@ -3,7 +3,6 @@ package miguknamja.pollution;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import miguknamja.pollution.data.PollutersDB;
 import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.data.PollutionWorldData;
 import miguknamja.utils.ChunkKey;
@@ -24,12 +23,7 @@ public class PollutionDissipation {
 		// Iterate over copy and update pollution in all these chunks, which may also cause pollution to spread to adjacent chunks
 		for( Map.Entry<ChunkKey, PollutionDataValue> entry : pollutedChunks.entrySet() ){
 			Chunk chunk = entry.getKey().getChunk(world);
-			PollutionDataValue pdv = dissipate( world, chunk );
-			
-			// Check to see if chunk is pollution-free and if it (no longer) contains any pollution generators
-			if( pdv.isClean() && !PollutersDB.contains( world, chunk ) ) {
-				// TODO : remove this chunk from our data structures
-			}
+			dissipate( world, chunk );			
 		}
 	}
 
