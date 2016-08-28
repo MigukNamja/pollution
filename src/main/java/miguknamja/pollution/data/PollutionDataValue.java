@@ -6,7 +6,19 @@ public class PollutionDataValue {
 	public double pollutionLevel;
 	public static final PollutionDataValue defaultData = new PollutionDataValue( Config.minPollutionLevel );
 
-	public void normalize() {
+	/**
+	 * Returns true if pollution is at minimum
+	 * 
+	 * @return
+	 */
+	public boolean isClean() {
+		return this.pollutionLevel == Config.minPollutionLevel;
+	}
+	
+	/**
+	 * Ensure pollution is within allowed bounds
+	 */
+	private void normalize() {
 		if( pollutionLevel < Config.minPollutionLevel ){ pollutionLevel = Config.minPollutionLevel; }
 		else if( pollutionLevel > Config.maxPollutionLevel ){ pollutionLevel = Config.maxPollutionLevel; }
 	}
@@ -31,25 +43,6 @@ public class PollutionDataValue {
 		pdv.normalize();
 		return( pdv );
 	}
-
-	/**
-	 * Immutable. Does not modify this. Instead, returns a new value.
-	 * @return new modified PollutionDataValue
-	 */
-	public PollutionDataValue negative() {
-		PollutionDataValue pdv = new PollutionDataValue( -this.pollutionLevel );
-		pdv.normalize();
-		return( pdv );
-	}
-	
-	/**
-	 * Returns true if pollution is at minimum
-	 * 
-	 * @return
-	 */
-	public boolean isClean() {
-		return this.pollutionLevel == Config.minPollutionLevel;
-	}
 	
 	/**
 	 * Immutable. Does not modify this. Instead, returns a new value.
@@ -62,6 +55,16 @@ public class PollutionDataValue {
 		return( pdv );
 	}
 	
+	/**
+	 * Immutable. Does not modify this. Instead, returns a new value.
+	 * @return new modified PollutionDataValue
+	 */
+	public PollutionDataValue negative() {
+		PollutionDataValue pdv = new PollutionDataValue( -this.pollutionLevel );
+		pdv.normalize();
+		return( pdv );
+	}
+
 	public PollutionDataValue() {
 		pollutionLevel = Config.minPollutionLevel;
 	}

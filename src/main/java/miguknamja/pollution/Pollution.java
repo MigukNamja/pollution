@@ -2,6 +2,7 @@ package miguknamja.pollution;
 
 import org.apache.logging.log4j.Logger;
 
+import miguknamja.pollution.commands.PollutionCommand;
 import miguknamja.pollution.data.PollutionWorldData;
 import miguknamja.pollution.effects.PollutionEffects;
 import miguknamja.pollution.proxy.CommonProxy;
@@ -79,7 +80,7 @@ public class Pollution implements ModBase
     @EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
     	Logging.log( "Pollution: server is loading" );
-        //event.registerServerCommand(new TeleportCommand());
+        event.registerServerCommand(new PollutionCommand());
     }
 
     @EventHandler

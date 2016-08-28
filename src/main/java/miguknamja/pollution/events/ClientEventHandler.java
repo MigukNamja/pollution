@@ -18,26 +18,14 @@ public class ClientEventHandler extends CommonEventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onFogColors(FogColors event) {
-		//event.setRed( color.r );
-		//event.setGreen( color.g );
-		//event.setBlue( color.b );
-		PollutionEffects.clientFog();
-		//Logging.log( "FogHandler.onFogColors(" + PollutionEffects.getFogDensity( pdv ) + ")" );
+		PollutionEffects.setFogColor( event );
+
+		//PollutionEffects.clientFog();
 	}
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onFogDensity(FogDensity event) {
-		/*
-		PollutionDataValue pdv = ClientData.pdv;
-		if( PollutionEffects.belowIgnoreThreshold( pdv ) ) {
-			event.setDensity( 0f );
-		} else {
-			event.setDensity( PollutionEffects.getFogDensity( pdv ) );
-		}
-		*/
-		PollutionEffects.clientFog();
-		event.setCanceled(true);
-		//Logging.log( "FogHandler.onFogDensity(" + PollutionEffects.getFogDensity( pdv ) + ")" );
+		PollutionEffects.setFogDensity( event );
 	}
 }

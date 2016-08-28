@@ -1,6 +1,5 @@
 package miguknamja.pollution.items;
 
-import miguknamja.pollution.data.PollutionDataValue;
 import miguknamja.pollution.data.PollutionWorldData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -39,8 +38,8 @@ public class PollutionProbe extends PollutionItemBase {
 		if( !worldIn.isRemote ) { // execute server side only
 			BlockPos pos = playerIn.getPosition();
 			Chunk chunk = worldIn.getChunkFromBlockCoords(pos);
-			PollutionDataValue pdv = PollutionWorldData.getPollution( worldIn, chunk );
-			playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + pdv.getPollutionString()));
+			String percent = String.format("%.2f", PollutionWorldData.getPollutionPercent(worldIn, chunk));
+			playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + percent + "%"));
 			
 			//System.out.println( PollutersDB.toStr() );
 		}
