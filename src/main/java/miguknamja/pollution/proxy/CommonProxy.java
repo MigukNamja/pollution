@@ -5,7 +5,7 @@ import java.io.File;
 import miguknamja.pollution.Config;
 import miguknamja.pollution.ModEntities;
 import miguknamja.pollution.Pollution;
-import miguknamja.pollution.blocks.ModBlocks;
+import miguknamja.pollution.block.ModBlocks;
 import miguknamja.pollution.compat.MainCompatHandler;
 import miguknamja.pollution.data.PollutersDB;
 import miguknamja.pollution.events.ServerEventHandler;

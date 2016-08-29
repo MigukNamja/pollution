@@ -1,4 +1,4 @@
-package miguknamja.pollution.blocks;
+package miguknamja.pollution.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

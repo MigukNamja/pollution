@@ -2,7 +2,7 @@ package miguknamja.pollution.proxy;
 
 import miguknamja.pollution.ModEntities;
 import miguknamja.pollution.Pollution;
-import miguknamja.pollution.blocks.ModBlocks;
+import miguknamja.pollution.block.ModBlocks;
 import miguknamja.pollution.events.ClientEventHandler;
 import miguknamja.pollution.items.ModItems;
 import miguknamja.utils.Logging;

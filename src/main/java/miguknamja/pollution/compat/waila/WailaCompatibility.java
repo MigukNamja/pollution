@@ -6,7 +6,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
-import miguknamja.pollution.blocks.PolluterAdminBlock;
+import miguknamja.pollution.block.PolluterAdminBlock;
 import miguknamja.utils.Logging;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;

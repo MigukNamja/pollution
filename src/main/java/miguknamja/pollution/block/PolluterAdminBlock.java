@@ -1,4 +1,4 @@
-package miguknamja.pollution.blocks;
+package miguknamja.pollution.block;
 
 import java.util.List;
 import java.util.Random;
@@ -8,6 +8,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import miguknamja.pollution.Pollution;
 import miguknamja.pollution.compat.waila.WailaInfoProvider;
 import miguknamja.pollution.data.PollutionWorldData;
+import miguknamja.pollution.tileentity.PolluterTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
