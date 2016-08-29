@@ -1,4 +1,4 @@
-package miguknamja.pollution.blocks;
+package miguknamja.pollution.block;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

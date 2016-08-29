@@ -26,7 +26,7 @@ public class Pollution implements ModBase
     public static final String MODID = "pollution";
     public static final String MODNAME = "Pollution";
     public static final String MIN_FORGE_VER = "12.18.1.2011";
-    public static final String VERSION = "0.0.8";
+    public static final String VERSION = "0.1.0";
 
     public static void doPollution( World world ) {
 		// TODO : move all the code below into Pollution.java and called it something like 'mainLoop'
